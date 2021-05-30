@@ -120,4 +120,13 @@ bool cycleMove(int *arr, int len, int n);
  */
 bool findMid(int A[], int B[], int len);
 
+/**
+ * 已知一个整数序列A = (a0,a1,...,an-1)， 其中0小于等于ai小于n ( 0小于等于i小于n )。若存在 ap1 = ap2=...=apm = x且m大于n/2 (0小于等于pk小于n, 1大于等于k小于等于m),则称 x 为 A的主元素。
+ * 例如A=(0,5,5,3,5,7,5,5),则5为主元素;又如A=(0,5,5,3,5,1,5,7),则A中没有主元素. 假设A中的n个元素保存在一个一维数组中， 请设计一个尽可能高效的算法， 找出A的主元素。
+ * @param list
+ * @param len
+ * @return
+ */
+int findMainEle(int *list, int len);
+
 #endif //DEMO1_MYDEMO_H

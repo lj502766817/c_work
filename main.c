@@ -345,10 +345,21 @@ bool cycleMove(int *arr,int len, int n){
 }
 
 /*
- * 将两个序列进行合并炒作到中位,则合并到总长的一半时就是中位数
- * 时间复杂度为O(n),空间复杂度为O(1)
+ * 法1:将两个序列进行合并炒作到中位,则合并到总长的一半时就是中位数,时间复杂度为O(n),空间复杂度为O(1)
+ * 法2:先找到两个升序序列A,B的中位数a,b,1.如果a=b则直接返回,2.如果a<b则舍去A较小的一半和B较大的一半,3.如果a>b则舍去A较大的一半和B较小的一半,重复1,2,3直到A,B剩一个元素,较小的那个就是中位数.
+ *     时间复杂度为O(log2(n)),空间负责度为O(1)
  */
 bool findMid(int A[], int B[], int len){
+    int value;
+    int findMid1(int A[], int B[], int len);
+    value = findMid1(A,B,len);
+    printf("mid value:%d",value);
+    int findMid2(int A[], int B[], int len);
+    value = findMid2(A,B,len);
+    printf("mid value:%d",value);
+    return true;
+}
+int findMid1(int A[], int B[], int len){
     int i=0,j=0,mid=0;
     int midValue;
     while (mid<=len-1){
@@ -361,8 +372,36 @@ bool findMid(int A[], int B[], int len){
         }
         mid++;
     }
-    printf("mid value:%d",midValue);
-    return true;
+    return midValue;
+}
+int findMid2(int A[], int B[], int len){
+    int s1=0,d1=len-1,m1,s2=0,d2=len-1,m2;
+    while (s1==d1&&s2==d2){
+        m1=(s1+d1)/2;
+        m2=(s2+d2)/2;
+        if(A[m1]==B[m2]){
+            //中位数相等直接返回
+            return A[m1];
+        }
+        //舍去A小的一半和B大的一半
+        if(A[m1]<B[m2]){
+            //
+        }
+        //舍去A大的一半和B小的一半
+        else{
+
+        }
+    }
+    return A[s1]>B[s2]?B[s2]:A[s1];
+}
+
+/*
+ *
+ */
+int findMainEle(int *list, int len){
+
+
+    return -1;
 }
 
 
