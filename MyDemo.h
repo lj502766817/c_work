@@ -11,15 +11,16 @@
 
 typedef struct {
     int value;
-}ElemType;
+} ElemType;
 
 typedef struct {
-    int MaxSize,Length;
+    int MaxSize, Length;
     ElemType *data;
-}SeqList;
+} SeqList;
 
 //斐波那契数列递归和非递归
 int fibonacciRecursion(int n);
+
 int fibonacciNonrecursion(int n);
 
 /**
@@ -87,15 +88,36 @@ SeqList mergeSeqList(SeqList *l1, SeqList *l2);
  * @param n
  * @return
  */
-bool exchangeArray(int arr[],int len, int m, int n);
+bool exchangeArray(int arr[], int len, int m, int n);
 
 /**
  * 线性表(a1,a2,a3,...,an)中的元素递增有序且按顺序存储于计算机内。
  * 要求设计一算法，完成用最少时间在表中查找数值为x的元素，
  * 若找到则将其与后继元素位置相交换，若找不到则将其插入表中并使表中元素仍递增有序。
  * @param list
+ * @param x
  * @return
  */
-bool handleValueX(SeqList *list);
+bool handleValueX(SeqList *, int x);
+
+/**
+ * 设将n (n> 1)个整数存放到一维数组R中。 设计一个在时间和空间两方面都尽可能高效的算法。
+ * 将R中保存的序列循环左移p(p在0和n之间)个位置， 即将R中的数据由(X0,X1,...,Xn-1)变换为(Xp,Xp+1,...,Xn-1,X0,X1,...,Xp-1)
+ * @param arr
+ * @param n
+ * @return
+ */
+bool cycleMove(int *arr, int len, int n);
+
+/**
+ * 一个长度为L(L大于)的升序序列S处在第[L/2]个位置的数称为S的中位数。
+ * 例如，若序列S1= (11， 13, 15, 17, 19)，则S1的中位数是15，两个序列的中位数是含它们所有元素的升序序列的中位数。
+ * 例如， 若S2=(2, 4, 6, 8, 20)， 则S1和S2的中位数是11。 现在有两个等长升序序列A和B试设计一个在时间和空间两方面都尽可能高效的算法，找出两个序列d和召的中位数。
+ * @param A
+ * @param B
+ * @param len
+ * @return
+ */
+bool findMid(int A[], int B[], int len);
 
 #endif //DEMO1_MYDEMO_H

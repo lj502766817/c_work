@@ -24,15 +24,6 @@ void exchange(int arr[], int begin, int end);
  */
 void printArr(int arr[], int len);
 
-/**
- * 二分查找,返回查找值的index
- * @param array
- * @param len
- * @param index
- * @return 是否找到
- */
-bool binarySearch(ElemType array[], int len, int *index);
-
 int main() {
     printf("Hello, World!\n");
 //    int num = fibonacciRecursion(5);
@@ -81,6 +72,10 @@ int main() {
     SeqList l2 = {InitSize, 11, data2};
 
     int arr[10] = {1, 3, 5, 7, 9, 2, 4, 6, 8, 10};
+    int arr1[10] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+
+    int A[5] = {11,13,15,17,19};
+    int B[5] = {2,4,6,8,20};
 
 //    ElemType *target = (ElemType*) malloc(sizeof(ElemType));
 //    delMin(list,target);
@@ -91,7 +86,9 @@ int main() {
 //    removeDuplicative(list);
 //    mergeSeqList(&l1,&l2);
 //    exchangeArray(arr,10,5,5);
-
+//    handleValueX(&l2,4);
+//    cycleMove(arr,10,3);
+    findMid(A,B,5);
     return 0;
 }
 
@@ -297,8 +294,75 @@ bool exchangeArray(int arr[], int len, int m, int n) {
     printArr(arr, len);
 }
 
-bool handleValueX(SeqList *list) {
-
+bool handleValueX(SeqList *list,int x) {
+    //二分查找
+    int begin=0,end=list->Length-1,mid;
+    while (begin<=end){
+        //找到中间位置,用减法防止溢出
+        mid = begin+(end-begin)/2;
+        if(list->data[mid].value==x){
+            //找到x跳出循环
+            break;
+        }
+        if(list->data[mid].value>x){
+            //去mid的左边查
+            end=mid-1;
+        } else{
+            //mid的右边查
+            begin=mid+1;
+        }
+    }
+    //找到x的情况,如果是最后一位就不往后移
+    if(mid!=list->Length-1&&list->data[mid].value==x){
+        ElemType temp = list->data[mid];
+        list->data[mid]=list->data[mid+1];
+        list->data[mid+1]=temp;
+    }
+    //没有找到x的情况,将x插入end+1的位置,后续元素后移
+    if(begin>end){
+        int i;
+        for (i = list->Length-1; i >end ; --i) {
+            list->data[i+1]=list->data[i];
+        }
+        list->data[i+1].value=x;
+        list->Length+=1;
+    }
+    printList(list);
 
     return true;
 }
+
+/*
+ * 循环左移将数组分为(a,b)两块,先分别将a,b逆置,得到的数组是(-a,-b),然后将整个数组逆置得到的-(-a,-b)就是循环左移后的数组
+ * 时间复杂度为O(n),空间复杂度为O(1)
+ */
+bool cycleMove(int *arr,int len, int n){
+    exchange(arr,0,n-1);
+    exchange(arr,n,len-1);
+    exchange(arr,0,len-1);
+    printArr(arr,len);
+    return true;
+}
+
+/*
+ * 将两个序列进行合并炒作到中位,则合并到总长的一半时就是中位数
+ * 时间复杂度为O(n),空间复杂度为O(1)
+ */
+bool findMid(int A[], int B[], int len){
+    int i=0,j=0,mid=0;
+    int midValue;
+    while (mid<=len-1){
+        if(A[i]<=B[j]){
+            midValue=A[i];
+            i++;
+        } else{
+            midValue=B[j];
+            j++;
+        }
+        mid++;
+    }
+    printf("mid value:%d",midValue);
+    return true;
+}
+
+
