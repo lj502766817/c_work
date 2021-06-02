@@ -74,8 +74,9 @@ int main() {
     int arr[10] = {1, 3, 5, 7, 9, 2, 4, 6, 8, 10};
     int arr1[10] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
 
-    int A[5] = {11,13,15,17,19};
-    int B[5] = {2,4,6,8,20};
+    int A[6] = {11,13,15,17,19,21};
+    int B[6] = {2,4,6,8,20,22};
+    int c[8] = {0,5,5,3,5,1,5,7};
 
 //    ElemType *target = (ElemType*) malloc(sizeof(ElemType));
 //    delMin(list,target);
@@ -88,7 +89,9 @@ int main() {
 //    exchangeArray(arr,10,5,5);
 //    handleValueX(&l2,4);
 //    cycleMove(arr,10,3);
-    findMid(A,B,5);
+//    findMid(A,B,6);
+//    findMainEle(c,8);
+    findNotAppearNum(c,8);
     return 0;
 }
 
@@ -351,15 +354,15 @@ bool cycleMove(int *arr,int len, int n){
  */
 bool findMid(int A[], int B[], int len){
     int value;
-    int findMid1(int A[], int B[], int len);
+    int findMid1(const int A[], const int B[], int len);
     value = findMid1(A,B,len);
-    printf("mid value:%d",value);
+    printf("mid value:%d\n",value);
     int findMid2(int A[], int B[], int len);
     value = findMid2(A,B,len);
-    printf("mid value:%d",value);
+    printf("mid value:%d\n",value);
     return true;
 }
-int findMid1(int A[], int B[], int len){
+int findMid1(const int A[], const int B[], int len){
     int i=0,j=0,mid=0;
     int midValue;
     while (mid<=len-1){
@@ -376,32 +379,105 @@ int findMid1(int A[], int B[], int len){
 }
 int findMid2(int A[], int B[], int len){
     int s1=0,d1=len-1,m1,s2=0,d2=len-1,m2;
-    while (s1==d1&&s2==d2){
+    //两个序列都只剩一个数时跳出循环
+    while (s1!=d1||s2!=d2){
         m1=(s1+d1)/2;
         m2=(s2+d2)/2;
         if(A[m1]==B[m2]){
             //中位数相等直接返回
             return A[m1];
         }
-        //舍去A小的一半和B大的一半
+        //舍去A小的一半和B大的一半,并保证A,B长度一致
         if(A[m1]<B[m2]){
-            //
+            if((s1+d1)%2==0){
+                //元素个数是奇数,A去掉中位数前面的元素,B去掉中位数后面的元素
+                s1=m1;
+                d2=m2;
+            } else{
+                //元素个数是偶数,A去掉中位数前面元素以及中位数,B去掉中位数后面元素
+                s1=m1+1;
+                d2=m2;
+            }
         }
         //舍去A大的一半和B小的一半
         else{
-
+            //同上
+            if((s1+d1)%2==0){
+                d1=m1;
+                s2=m2;
+            } else{
+                d1=m1;
+                s2=m2+1;
+            }
         }
     }
     return A[s1]>B[s2]?B[s2]:A[s1];
 }
 
 /*
- *
+ * 主元素的个数是超过总数的一半的,采用对消法.
+ * 首先,选取候选的主元素,依次遍历序列,将遇到的第一个数保存在num中,并设置计数为1,然后查看下一个数,如果和num相同就计数加1,不同就计数减1.
+ * 当计数为减到0时,设置下一个数为num,并设置计数为1,继续遍历完成.然后,再次遍历数组,检查得到的num出现的次数是否超过总数的一半.
+ * 时间复杂度为O(n),空间复杂度为O(1)
  */
-int findMainEle(int *list, int len){
-
-
+int findMainEle(const int *list, int len){
+    int num,cnt=0;
+    //选取可能的主元素
+    for (int i = 0; i < len; ++i) {
+        if(cnt==0){
+            num = list[i];
+            ++cnt;
+        } else{
+            if(num==list[i]){
+                ++cnt;
+            } else{
+                --cnt;
+            }
+        }
+    }
+    //判断是否是主元素
+    cnt=0;
+    for (int i = 0; i < len; ++i) {
+        if(list[i]==num){
+            ++cnt;
+        }
+    }
+    if(cnt>len/2){
+        printf("main element is:%d",num);
+        return num;
+    }
     return -1;
+}
+
+/*
+ * 在时间上高效就需要牺牲空间,设置一个备用数组a[n],初始值全为0,a[0]表示1,...,a[n]表示n+1,然后遍历数组arr,如果arr中出现了由a表示的数,则设置a对应位置的值为1.
+ * 最后遍历a,当找到a里值为0的位置时,没有出现的最小数就是i+1.
+ * 时间复杂度为O(n),空间复杂度为O(n)
+ */
+bool findNotAppearNum(const int *arr, int len){
+    //初始化备用数组a
+    int *a= malloc(len * sizeof(int));
+    for (int i = 0; i < len; ++i) {
+        a[i]=0;
+    }
+    //遍历arr
+    for (int i = 0; i < len; ++i) {
+        if(1<=arr[i]&&arr[i]<=len+1){
+            //arr的值在1到n+1之间
+            a[arr[i]-1]=1;
+        }
+    }
+    //查找空出来的数
+    int i=0;
+    while (i<len){
+        if(a[i]==0){
+            break;
+        }
+        i++;
+    }
+    ++i;
+    printf("num is:%d",i);
+    return true;
 }
 
 
