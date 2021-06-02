@@ -127,6 +127,15 @@ bool findMid(int A[], int B[], int len);
  * @param len
  * @return
  */
-int findMainEle(int *list, int len);
+int findMainEle(const int *list, int len);
+
+/**
+ * 给定一个含n(n大于等于1)个整数的数组，请设计一个在时间上尽可能高效的算法，找出数组中未出现的最小正整数。
+ * 例如，数组{-5,3,2,3}中未出现的最小正整数是1;数组{1，2,3}中未出现的最小正整数是4。
+ * @param arr
+ * @param len
+ * @return
+ */
+bool findNotAppearNum(const int *arr, int len);
 
 #endif //DEMO1_MYDEMO_H
