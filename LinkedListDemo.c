@@ -35,7 +35,10 @@ int main(){
 //    removeValueX(LWithHead,3);
 //    printLinkedListWithHead(LWithHead);
 //    printListReverse(LWithHead);
-    deleteMin(LWithHead);
+//    deleteMin(LWithHead);
+//    reverseLinkedListWithHead(LWithHead);
+//    ascendLinkedListWithHead(LWithHead);
+    removeBetween(LWithHead,2,8);
     return 1;
 }
 
@@ -163,6 +166,9 @@ void printListReverse2(LinkedList L){
     printf("%d\t",L->data);
 }
 
+/*
+ * 遍历找出节点,然后删除.时间复杂度为O(n),空间复杂度为O(1)
+ */
 void deleteMin(LinkedList L){
     LinkedList head = L;
     LNode *preNode=L;
@@ -180,4 +186,87 @@ void deleteMin(LinkedList L){
     preNode->next = preNode->next->next;
     free(p);
     printLinkedListWithHead(head);
+}
+
+/*
+ * 采用头插法,重新遍历构建链表.时间复杂度为O(n),空间复杂度为O(1)
+ */
+void reverseLinkedListWithHead(LinkedList L){
+    LNode *temp = malloc(sizeof(LNode));
+    LNode *p;
+    temp->next = L->next;
+    L->next = NULL;
+    while (temp->next!=NULL){
+        p = temp->next;
+        temp->next = temp->next->next;
+        p->next = L->next;
+        L->next=p;
+    }
+
+    printLinkedListWithHead(L);
+}
+
+/*
+ * 采用直接插入排序,时间复杂度为O(n),空间复杂度为O(1)
+ */
+void ascendLinkedListWithHead(LinkedList L){
+    LNode *newHead = malloc(sizeof(LNode));
+    newHead->next = L->next->next;
+    newHead->data = L->next->data;
+    L->next->next=NULL;
+
+    while (newHead->next!=NULL){
+        //遍历取出一个元素
+        LNode *node = newHead->next;
+        newHead->next = newHead->next->next;
+        node->next = NULL;
+        //插入到新的L中
+        LNode *temp = L;
+        while (true){
+            //最后一个节点直接放在后面
+            if(temp->next==NULL){
+                temp->next=node;
+                break;
+            }
+            //小于当前节点的后一位,就插入到当前节点的后面
+            if(node->data<temp->next->data){
+                node->next = temp->next;
+                temp->next = node;
+                break;
+            }
+            temp = temp->next;
+        }
+    }
+
+    printLinkedListWithHead(L);
+}
+
+/*
+ * 直接遍历无序链表,时间复杂度为O(n)
+ */
+void removeBetween(LinkedList L, int begin, int end){
+    LNode *head = L;
+    //遍历检查下一个节点
+    while (head->next!=NULL){
+        if(head->next->data>begin&&head->next->data<end){
+            //下个节点的值在范围里,删除
+            LNode *p = head->next;
+            head->next = head->next->next;
+            free(p);
+        } else{
+            //指向下一个节点
+            head = head->next;
+        }
+    }
+
+    printLinkedListWithHead(L);
+}
+
+/*
+ * 两个单链表有公共节点,则这两个链表的拓扑结构应该是Y型的,考虑到两个链表可能长短不一,则可以先算出两个链表的长度差,
+ * 长的链表先遍历差值的那一段到两个链表剩下的长度相同,然后两个链表一起按相同速度遍历,找到相同的接点.
+ * 时间复杂度为O(l1+l2),空间复杂度为O(1)
+ */
+void findSameNode(LinkedList l1, LinkedList l2){
+    
 }
