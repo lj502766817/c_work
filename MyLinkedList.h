@@ -44,4 +44,31 @@ void printListReverse(LinkedList L);
  */
 void deleteMin(LinkedList L);
 
+/**
+ * 试编写算法将带头结点的单链表就地逆置，所谓“就地”是指辅助空间复杂度为O(1)
+ * @param L
+ */
+void reverseLinkedListWithHead(LinkedList L);
+
+/**
+ * 有一个带头结点的单链表L，设计一个算法使其元素递增有序
+ * @param L
+ */
+void ascendLinkedListWithHead(LinkedList L);
+
+/**
+ * 设在一个带表头结点的单链表中所有元素结点的数据值无序，试编写一个函数，删除表中所有介于给定的两个值（作为函数参数给出）之间的元素的元素（若存在）。
+ * @param L
+ * @param begin
+ * @param end
+ */
+void removeBetween(LinkedList L, int begin, int end);
+
+/**
+ * 给定两个单链表，编写算法找出两个链表的公共结点。
+ * @param l1
+ * @param l2
+ */
+void findSameNode(LinkedList l1, LinkedList l2);
+
 #endif //DEMO1_MYLINKEDLIST_H
