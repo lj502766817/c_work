@@ -25,11 +25,22 @@ LinkedList initLinkedList(const int arr[], int len);
  */
 LinkedList initLinkedListWithHead(const int arr[], int len);
 
+void initLinkedListY(LinkedList l1, LinkedList l2);
+
 int main(){
     printf("hello LinkedList\n");
     int a[] = {11,2,8,4,3,5};
+    int b[] = {7,10,10,21,30,42,42,42,51,70};
     LinkedList L= initLinkedList(a,6);
     LinkedList LWithHead = initLinkedListWithHead(a,6);
+    LinkedList LWithHead1 = initLinkedListWithHead(b,10);
+    LNode *l1 = malloc(sizeof(LNode));
+    l1->next = NULL;
+    l1->data = 0;
+    LNode *l2 = malloc(sizeof(LNode));
+    l2->next = NULL;
+    l2->data = 0;
+//    initLinkedListY(l1,l2);
 //    deleteValueX(L,3);
 //    printLinkedList(L);
 //    removeValueX(LWithHead,3);
@@ -38,8 +49,40 @@ int main(){
 //    deleteMin(LWithHead);
 //    reverseLinkedListWithHead(LWithHead);
 //    ascendLinkedListWithHead(LWithHead);
-    removeBetween(LWithHead,2,8);
+//    removeBetween(LWithHead,2,8);
+//    findSameNode(l1,l2);
+//    printAndFreeByAsc(LWithHead);
+//    splitLinkedList(LWithHead1,l1);
+    splitLinkedList2(LWithHead,l1,l2);
     return 1;
+}
+
+void initLinkedListY(LinkedList l1, LinkedList l2){
+    LNode *pre1 = l1;
+    LNode *pre2 = l2;
+    for (int i = 15; i < 19; ++i) {
+        LNode *node = malloc(sizeof(LNode));
+        node->data = i;
+        node->next = NULL;
+        pre1->next = node;
+        pre1 = node;
+    }
+    for (int i = 21; i < 28; ++i) {
+        LNode *node = malloc(sizeof(LNode));
+        node->data = i;
+        node->next = NULL;
+        pre2->next = node;
+        pre2 = node;
+    }
+    for (int i = 3; i < 9; ++i) {
+        LNode *node = malloc(sizeof(LNode));
+        node->data = i;
+        node->next = NULL;
+        pre1->next = node;
+        pre1 = node;
+        pre2->next = node;
+        pre2 = node;
+    }
 }
 
 LinkedList initLinkedList(const int arr[], int len){
@@ -268,5 +311,123 @@ void removeBetween(LinkedList L, int begin, int end){
  * 时间复杂度为O(l1+l2),空间复杂度为O(1)
  */
 void findSameNode(LinkedList l1, LinkedList l2){
+    int len1=0,len2=0,diff=0;
+    LNode *temp1 = l1,*temp2=l2;
+    //计算两个链表的长度
+    while (temp1->next!=NULL){
+        ++len1;
+        temp1 = temp1->next;
+    }
+    while (temp2->next!=NULL){
+        ++len2;
+        temp2 = temp2->next;
+    }
+    //从头开始,较长的链表先移动差值的单位
+    temp1 = l1,temp2=l2;
+    if(len1>len2){
+        diff = len1-len2;
+        for (int i = 0; i < diff; ++i) {
+            temp1 = temp1->next;
+        }
+    } else{
+        diff = len2-len1;
+        for (int i = 0; i < diff; ++i) {
+            temp2 = temp2->next;
+        }
+    }
+
+    //两个链表剩下的长度相同,开始同步遍历
+    while (temp1->next!=NULL&&temp2->next!=NULL){
+        if(temp1->next==temp2->next){
+            printf("find same node:%d",temp1->next->data);
+            break;
+        }
+        temp1 = temp1->next;
+        temp2 = temp2->next;
+    }
+
+}
+
+/*
+ * 每次遍历链表找到最小的结点,然后删除该节点,直到剩下一个头结点.时间复杂度为O(n^2),空间复杂度为O(1)
+ * 如果不设置数组的限制,可以把链表复制到数组里,然后用O(nlog(n))的时间复杂度算法排序,然后输出
+ */
+void printAndFreeByAsc(LinkedList L){
+    LNode *pre = L,*temp = L;
+    while (L->next!=NULL){
+        //找最小的节点
+        while (temp->next!=NULL){
+            if(pre->next->data>temp->next->data){
+                pre=temp;
+            }
+            temp = temp->next;
+        }
+        //删除节点
+        printf("delete node:%d\n",pre->next->data);
+        pre->next = pre->next->next;
+        //重置
+        pre = L,temp = L;
+    }
+}
+
+/*
+ * 遍历A链表,将偶数序号的节点采用尾插法拼接到B上,时间复杂度为O(n),空间复杂度为O(1).
+ */
+void splitLinkedList(LinkedList A, LinkedList B){
+    int index=0;
+    LNode *temp1=A,*temp2=B;
+    while (temp1->next!=NULL){
+        ++index;
+        if(index%2==0){
+            //把A的偶数节点取出移到B上,此时就相当于A节点已经往前移动了一步
+            temp2->next=temp1->next;
+            temp1->next = temp1->next->next;
+            temp2 = temp2->next;
+            temp2->next=NULL;
+        } else{
+            //没有取出节点,A手动前进一步
+            temp1 = temp1->next;
+        }
+    }
+
+    printLinkedListWithHead(A);
+    printLinkedListWithHead(B);
+}
+
+/*
+ * 每次取出C中的第一个结点直到全部取完,将序号为奇数的结点采用尾插法插入A中,将序号为偶数的结点采用头插法插入B中.
+ * 时间复杂度为O(n),空间复杂度为O(1)
+ */
+void splitLinkedList2(LinkedList C, LinkedList A, LinkedList B){
+    int index = 0;
+    LNode *temp=A;
+    while (C->next!=NULL){
+        ++index;
+        //取出一个节点
+        LNode *node = C->next;
+        C->next = C->next->next;
+        node->next=NULL;
+
+        if(index%2==0){
+            //偶数结点插入B
+            node->next = B->next;
+            B->next = node;
+        } else{
+            //奇数结点插入A
+            temp->next = node;
+            temp = temp->next;
+        }
+    }
+
+    printLinkedListWithHead(A);
+    printLinkedListWithHead(B);
+
+}
+
+/*
+ * 遍历链表,如果当前结点值等于下一个结点的值就移除下一个节点,不然就往下一个结点移动.
+ * 时间复杂度为O(n),空间复杂度为O(1)
+ */
+void distinctLinkedList(LinkedList L){
     
 }
