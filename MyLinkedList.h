@@ -71,4 +71,35 @@ void removeBetween(LinkedList L, int begin, int end);
  */
 void findSameNode(LinkedList l1, LinkedList l2);
 
+/**
+ * 给定一个带表头结点的单链表，设head为头指针，结点结构为（data，next) data 为整型元素，next为指针，
+ * 试写出算法：按递增次序输出单链表中各结点的数据元素，并释放结点所占的存储空间（要求：不允许使用数组作为辅助空间）。
+ * @param L
+ */
+void printAndFreeByAsc(LinkedList L);
+
+/**
+ * 将一个带头结点的单链表A分解为两个带头结点的单链表A和B,使得A表中含有原表中序号为奇数的元素，而B表中含有原表中序号为偶数的元素，且保持其相对顺序不变。
+ * @param A
+ * @param B
+ */
+void splitLinkedList(LinkedList A, LinkedList B);
+
+/**
+ * 设C= {a1,b1,a2,b2,...,am,bn}为线性表，采用带头结点的hc单链表存放，
+ * 设计一个就地算法，将其拆分为两个线性表，使得A= {a1,a2,...,am}，B={bn,...,b2,b1}
+ * @param C
+ * @param A
+ * @param B
+ */
+void splitLinkedList2(LinkedList C, LinkedList A, LinkedList B);
+
+/**
+ * 在一个递增有序的线性表中，有数值相同的元素存在。
+ * 若存储方式为单链表，设计算法去掉数值相同的元素，使表中不再有重复的元素，
+ * 例如(7, 10, 10, 21，30, 42, 42, 42, 51，70)将变为(7,10,21,30, 42, 51，70)。
+ * @param L
+ */
+void distinctLinkedList(LinkedList L);
+
 #endif //DEMO1_MYLINKEDLIST_H
