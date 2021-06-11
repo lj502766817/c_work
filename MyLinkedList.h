@@ -102,4 +102,27 @@ void splitLinkedList2(LinkedList C, LinkedList A, LinkedList B);
  */
 void distinctLinkedList(LinkedList L);
 
+/**
+ * 假设有两个按元素值递增次序排列的线性表，均以单链表形式存储。
+ * 请编写算法将这两个单链表归并为一个按元素值递减次序排列的单链表，并要求利用原来两个单链表的结点存放归并后的单链表。
+ * @param l1
+ * @param l2
+ */
+void mergeLinkedListDesc(LinkedList l1, LinkedList l2);
+
+/**
+ * 设A和B是两个单链表（带头结点），其中元素递增有序。设计一个算法从A和B中的公共元素产生单链表C，要求不破坏A,B的结点。
+ * @param A
+ * @param B
+ * @param C
+ */
+void getCommonLinkedList(LinkedList A, LinkedList B, LinkedList C);
+
+/**
+ * 已知两个链表A和B分别表示两个集合，其元素递增排列。编制函数，求A与B的交集，并存放于A链表中。
+ * @param A
+ * @param B
+ */
+void findCommonNode(LinkedList A, LinkedList B);
+
 #endif //DEMO1_MYLINKEDLIST_H
