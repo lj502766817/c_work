@@ -3,5 +3,5 @@ project(demo1 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(SqeList main.c MyDemo.h)
-add_executable(LinkedList LinkedListDemo.c MyLinkedList.h)
+add_executable(SqeList seqList/main.c seqList/MyDemo.h)
+add_executable(LinkedList linkedList/LinkedListDemo.c linkedList/MyLinkedList.h)
