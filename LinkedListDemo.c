@@ -30,10 +30,12 @@ void initLinkedListY(LinkedList l1, LinkedList l2);
 int main(){
     printf("hello LinkedList\n");
     int a[] = {11,2,8,4,3,5};
-    int b[] = {7,10,10,21,30,42,42,42,51,70};
+    int b[] = {1,3,5,7,9};
+    int c[] = {2,3,6,7,11};
     LinkedList L= initLinkedList(a,6);
     LinkedList LWithHead = initLinkedListWithHead(a,6);
-    LinkedList LWithHead1 = initLinkedListWithHead(b,10);
+    LinkedList LWithHead1 = initLinkedListWithHead(b,5);
+    LinkedList LWithHead2 = initLinkedListWithHead(c,5);
     LNode *l1 = malloc(sizeof(LNode));
     l1->next = NULL;
     l1->data = 0;
@@ -53,7 +55,10 @@ int main(){
 //    findSameNode(l1,l2);
 //    printAndFreeByAsc(LWithHead);
 //    splitLinkedList(LWithHead1,l1);
-    splitLinkedList2(LWithHead,l1,l2);
+//    splitLinkedList2(LWithHead,l1,l2);
+//    distinctLinkedList(LWithHead1);
+//    mergeLinkedListDesc(LWithHead1,LWithHead2);
+//    getCommonLinkedList(LWithHead1,LWithHead2,l1);
     return 1;
 }
 
@@ -429,5 +434,97 @@ void splitLinkedList2(LinkedList C, LinkedList A, LinkedList B){
  * 时间复杂度为O(n),空间复杂度为O(1)
  */
 void distinctLinkedList(LinkedList L){
+    LNode *p = L->next;
+    while (p->next!=NULL){
+        if(p->data==p->next->data){
+            LNode *node = p->next;
+            p->next = p->next->next;
+            free(node);
+        } else{
+            p = p->next;
+        }
+    }
+
+    printLinkedListWithHead(L);
+}
+
+/*
+ * 从两个链表(长度分别为m,n)从头遍历取出结点,并对比大小,然后采用头插法插入新链表里.
+ * 时间复杂度为O(m)(假设m>n),空间复杂度为O(1)
+ */
+void mergeLinkedListDesc(LinkedList l1, LinkedList l2){
+    LNode *head = malloc(sizeof(LNode));
+    head->data=0;
+    head->next=NULL;
+    LNode *node;
+    while (l1->next!=NULL&&l2->next!=NULL){
+        //同时依次遍历两个链表
+        if(l1->next->data<l2->next->data){
+            node = l1->next;
+            l1->next = l1->next->next;
+            node->next=NULL;
+        } else{
+            node = l2->next;
+            l2->next = l2->next->next;
+            node->next=NULL;
+        }
+        //将取出的结点插入新链表
+        node->next = head->next;
+        head->next = node;
+
+    }
+    //处理余下的那条链表剩下的结点
+    while (l1->next!=NULL){
+        node = l1->next;
+        l1->next = l1->next->next;
+        node->next=NULL;
+        node->next = head->next;
+        head->next = node;
+    }
+    while (l2->next!=NULL){
+        node = l2->next;
+        l2->next = l2->next->next;
+        node->next=NULL;
+        node->next = head->next;
+        head->next = node;
+    }
+
+    printLinkedListWithHead(head);
+}
+
+/*
+ * 从头开始依次遍历A和B,每次拿一个结点进行比较.
+ * 当碰到元素相同的结点时,生成一个结点用尾插法插入C中,当元素不同时,值较小的那个取下个节点再次进行比较,直到一个链表完全遍历完.
+ * 时间复杂度为O(n),空间复杂度为O(n)
+ */
+void getCommonLinkedList(LinkedList A, LinkedList B, LinkedList C){
+    LNode *p = A->next,*q = B->next,*pre = C;
+    while (p&&q){
+        if(p->data==q->data){
+            //生成结点
+            LNode *node = malloc(sizeof(LNode));
+            node->next=pre->next;
+            node->data = p->data;
+            //尾插法
+            pre->next = node;
+            pre=node;
+        }
+        //值小的结点前进
+        if(p->data<q->data){
+            p = p->next;
+        } else{
+            q = q->next;
+        }
+    }
+
+    printLinkedListWithHead(C);
+}
+
+/*
+ * 从头开始遍历A和B,依次从A和B取一个结点进行比较.如果元素相同,则A继续取下一个节点与B进行比较,
+ * 当元素不同时,如果A的元素小,则A删除那个结点,如果B元素小,则B继续取下一个节点.直到一个链表完全遍历完成.完成后如果A没有遍历完则舍去剩下的结点.
+ * (并归的思想)时间复杂度为O(n),空间复杂度为O(1)
+ */
+void findCommonNode(LinkedList A, LinkedList B){
     
 }
