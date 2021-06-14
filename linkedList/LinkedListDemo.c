@@ -30,11 +30,11 @@ void initLinkedListY(LinkedList l1, LinkedList l2);
 int main(){
     printf("hello LinkedList\n");
     int a[] = {11,2,8,4,3,5};
-    int b[] = {1,3,5,7,9};
+    int b[] = {1,3,5,7,9,11,15,18};
     int c[] = {2,3,6,7,11};
     LinkedList L= initLinkedList(a,6);
     LinkedList LWithHead = initLinkedListWithHead(a,6);
-    LinkedList LWithHead1 = initLinkedListWithHead(b,5);
+    LinkedList LWithHead1 = initLinkedListWithHead(b,8);
     LinkedList LWithHead2 = initLinkedListWithHead(c,5);
     LNode *l1 = malloc(sizeof(LNode));
     l1->next = NULL;
@@ -59,6 +59,7 @@ int main(){
 //    distinctLinkedList(LWithHead1);
 //    mergeLinkedListDesc(LWithHead1,LWithHead2);
 //    getCommonLinkedList(LWithHead1,LWithHead2,l1);
+    findCommonNode(LWithHead1,LWithHead2);
     return 1;
 }
 
@@ -508,6 +509,7 @@ void getCommonLinkedList(LinkedList A, LinkedList B, LinkedList C){
             //尾插法
             pre->next = node;
             pre=node;
+            continue;
         }
         //值小的结点前进
         if(p->data<q->data){
@@ -526,5 +528,37 @@ void getCommonLinkedList(LinkedList A, LinkedList B, LinkedList C){
  * (并归的思想)时间复杂度为O(n),空间复杂度为O(1)
  */
 void findCommonNode(LinkedList A, LinkedList B){
-    
+    LNode *head = A;
+    while (head->next&&B->next){
+        //相同则继续向后比较
+        if(head->next->data==B->next->data){
+            head = head->next;
+            B = B->next;
+            continue;
+        }
+        //如果A的结点小于B,则舍去A的结点,此时相当于A前进了一个结点
+        if(head->next->data<B->next->data){
+            LNode *p = head->next;
+            head->next = head->next->next;
+            free(p);
+        } else{
+            //B前进一个结点
+            B = B->next;
+        }
+    }
+    //如果A没有遍历完,则舍去剩下的结点
+    if(head->next){
+        head->next = NULL;
+    }
+
+    printLinkedListWithHead(A);
+}
+
+/*
+ * 法1:KMP算法,时间复杂度为O(m+n),空间复杂度为O(n)
+ * 法2:从A和B的第一个结点开始遍历,依次选出一个结点,如果相同,则继续看后继结点,如果A,B的后继结点中有不相同的,那么A回到初始结点的后继结点,B回到初始结点继续比较.知道比较完成或者A终结.
+ * 时间复杂度为O(m*n),空间复杂度为O(1)
+ */
+bool checkSubSequence(LinkedList A, LinkedList B){
+
 }
