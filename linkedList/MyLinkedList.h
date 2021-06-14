@@ -129,8 +129,13 @@ void findCommonNode(LinkedList A, LinkedList B);
  * 两个整数序列A=a1,a2,a3,...,am和B=b1,b2,b3,...,bn已经存入两个单链表中，设计一个算法,判断序列B是否是序列A的连续子序列。
  * @param A
  * @param B
- * @return
  */
-bool checkSubSequence(LinkedList A, LinkedList B);
+void checkSubSequence(LinkedList A, LinkedList B);
+
+/**
+ * 设计一个算法用于判断带头结点的循环双链表是否对称。
+ * @param L
+ */
+void checkSymmetry(DLinkedList L);
 
 #endif //DEMO1_MYLINKEDLIST_H

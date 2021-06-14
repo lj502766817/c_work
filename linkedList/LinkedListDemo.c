@@ -31,7 +31,7 @@ int main(){
     printf("hello LinkedList\n");
     int a[] = {11,2,8,4,3,5};
     int b[] = {1,3,5,7,9,11,15,18};
-    int c[] = {2,3,6,7,11};
+    int c[] = {3,5,7,9,11};
     LinkedList L= initLinkedList(a,6);
     LinkedList LWithHead = initLinkedListWithHead(a,6);
     LinkedList LWithHead1 = initLinkedListWithHead(b,8);
@@ -59,7 +59,8 @@ int main(){
 //    distinctLinkedList(LWithHead1);
 //    mergeLinkedListDesc(LWithHead1,LWithHead2);
 //    getCommonLinkedList(LWithHead1,LWithHead2,l1);
-    findCommonNode(LWithHead1,LWithHead2);
+//    findCommonNode(LWithHead1,LWithHead2);
+    checkSubSequence(LWithHead1,LWithHead2);
     return 1;
 }
 
@@ -555,10 +556,47 @@ void findCommonNode(LinkedList A, LinkedList B){
 }
 
 /*
- * 法1:KMP算法,时间复杂度为O(m+n),空间复杂度为O(n)
+ * 法1:KMP算法,时间复杂度为O(m+n),空间复杂度为O(n),详见kmp算法解析demo
  * 法2:从A和B的第一个结点开始遍历,依次选出一个结点,如果相同,则继续看后继结点,如果A,B的后继结点中有不相同的,那么A回到初始结点的后继结点,B回到初始结点继续比较.知道比较完成或者A终结.
  * 时间复杂度为O(m*n),空间复杂度为O(1)
  */
-bool checkSubSequence(LinkedList A, LinkedList B){
+void checkSubSequence(LinkedList A, LinkedList B){
+    LNode *p = A->next,*temp = A->next,*q = B->next;
+    while (temp){
+        if(temp->data!=q->data){
+            //有结点值不同,B回到初始结点,A回到初始结点的下个结点
+            temp = p->next;
+            p = p->next;
+            q = B->next;
+            continue;
+        }
+        if(temp->data==q->data){
+            //结点值相同,继续比较后继结点
+            temp = temp->next;
+            q = q->next;
+        }
+        if(q==NULL){
+            //B比较完成,结束
+            printf("B是A的子串!\n");
+            break;
+        }
+    }
+}
 
+/*
+ * p从头部开始遍历,q从尾部开始遍历,直到p,q相同(奇数结点)或者p,q相邻(偶数结点)时结束,如果其中有p的值不等于q则不对称.
+ * 时间复杂度为O(n),空间复杂度为O(1)
+ */
+void checkSymmetry(DLinkedList L){
+    DNode *p = L->next,*q = L->prior;
+    while (true){
+        if(p->data!=q->data){
+            printf("循环双链表L不对称");
+            break;
+        }
+        if(p==q||p->next==q){
+            printf("循环双链表L对称");
+            break;
+        }
+    }
 }
