@@ -598,5 +598,7 @@ void checkSymmetry(DLinkedList L){
             printf("循环双链表L对称");
             break;
         }
+        p = p->next;
+        q = q->prior;
     }
 }
