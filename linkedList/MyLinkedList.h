@@ -17,6 +17,207 @@ typedef struct DNode{
     struct DNode *prior,*next;
 }DNode,*DLinkedList;
 
+/*
+ * 打印不带头结点的单链表
+ */
+void printLinkedList(LinkedList L);
+
+/*
+ * 打印带头结点的单链表
+ */
+void printLinkedListWithHead(LinkedList L);
+
+/*
+ * 初始化不带头结点的单链表,采用尾插法
+ */
+LinkedList initLinkedList(const int arr[], int len);
+
+/*
+ * 初始化带头结点的单链表,采用尾插法
+ */
+LinkedList initLinkedListWithHead(const int arr[], int len);
+
+void initLinkedListY(LinkedList l1, LinkedList l2);
+
+/*
+ * 初始化带头结点的双链表,采用尾插法
+ */
+DLinkedList initDLinkedList(const int arr[], int len);
+
+/*
+ * 初始化带头结点的双链表,采用尾插法
+ */
+DLinkedList initCycleDLinkedList(const int arr[], int len);
+
+void printDLinkedList(DLinkedList L);
+
+
+LinkedList initCycleLinkedList(const int arr[], int len);
+
+LinkedList initCycleLinkedListWithHead(const int arr[], int len);
+
+/**************************************************** Implementation *************************************************************/
+
+LinkedList initCycleLinkedListWithHead(const int arr[], int len){
+    LNode *head = malloc(sizeof(LNode));
+    head->data = len;
+    head->next = head;
+    LNode *pre = head;
+    for (int i = 0; i < len; ++i) {
+        LNode *node = malloc(sizeof(LNode));
+        node->data = arr[i];
+        node->next = pre->next;
+        pre = node;
+    }
+    return head;
+}
+
+LinkedList initCycleLinkedList(const int arr[], int len){
+    LinkedList L;
+    LNode *pre;
+    for (int i = 0; i < len; ++i) {
+        LNode *node = malloc(sizeof(LNode));
+        node->data = arr[i];
+        if(i==0){
+            L = node;
+            node->next = L;
+        } else{
+            node->next = pre->next;
+            pre->next = node;
+        }
+        pre = node;
+    }
+    return L;
+}
+
+DLinkedList initCycleDLinkedList(const int arr[], int len){
+    DNode *head = malloc(sizeof(DNode));
+    head->data = len;
+    head->next = head;
+    head->prior = head;
+    DNode *p = head;
+    for (int i = 0; i < len; ++i) {
+        DNode *node = malloc(sizeof(DNode));
+        node->data = arr[i];
+        node->next = head;
+        node->prior = head->prior;
+        head->prior->next = node;
+        head->prior = node;
+    }
+    return head;
+}
+
+DLinkedList initDLinkedList(const int arr[], int len){
+    DNode *head = malloc(sizeof(DNode));
+    head->data = len;
+    head->next = NULL;
+    head->prior = NULL;
+    DNode *p = head;
+    for (int i = 0; i < len; ++i) {
+        DNode *node = malloc(sizeof(DNode));
+        node->data = arr[i];
+        node->prior = p;
+        node->next = NULL;
+        p->next = node;
+        p = p->next;
+    }
+    return head;
+}
+
+void initLinkedListY(LinkedList l1, LinkedList l2){
+    LNode *pre1 = l1;
+    LNode *pre2 = l2;
+    for (int i = 15; i < 19; ++i) {
+        LNode *node = malloc(sizeof(LNode));
+        node->data = i;
+        node->next = NULL;
+        pre1->next = node;
+        pre1 = node;
+    }
+    for (int i = 21; i < 28; ++i) {
+        LNode *node = malloc(sizeof(LNode));
+        node->data = i;
+        node->next = NULL;
+        pre2->next = node;
+        pre2 = node;
+    }
+    for (int i = 3; i < 9; ++i) {
+        LNode *node = malloc(sizeof(LNode));
+        node->data = i;
+        node->next = NULL;
+        pre1->next = node;
+        pre1 = node;
+        pre2->next = node;
+        pre2 = node;
+    }
+}
+
+LinkedList initLinkedList(const int arr[], int len){
+    LinkedList head;
+    LinkedList pre;
+    for (int i = 0; i < len; ++i) {
+        if(i==0){
+            head = malloc(sizeof(LNode));
+            head->data = arr[i];
+            head->next = NULL;
+            pre = head;
+        } else{
+            LinkedList node = malloc(sizeof(LNode));
+            node->data = arr[i];
+            node->next = NULL;
+            pre->next = node;
+            pre = node;
+        }
+    }
+    return head;
+}
+
+LinkedList initLinkedListWithHead(const int arr[], int len){
+    LinkedList head = malloc(sizeof(LNode));
+    head->data=len;
+    head->next=NULL;
+    LinkedList pre = head;
+    for (int i = 0; i < len; ++i) {
+        LinkedList node = malloc(sizeof(LNode));
+        node->data = arr[i];
+        node->next = NULL;
+        pre->next = node;
+        pre = node;
+    }
+    return head;
+}
+
+void printLinkedList(LinkedList L){
+    printf("LinkedList:\t");
+    LNode *head = L;
+    while (L!=NULL){
+        printf("%d\t",L->data);
+        L= L->next;
+        if(L==head){
+            break;
+        }
+    }
+}
+
+void printDLinkedList(DLinkedList L){
+    printf("DLinkedList:");
+    DNode *head = L;
+    while (L->next&&L->next!=head){
+        printf("%d\t",L->next->data);
+        L = L->next;
+    }
+}
+
+void printLinkedListWithHead(LinkedList L){
+    printf("LinkedListWithHead:");
+    while (L->next!=NULL){
+        printf("%d\t",L->next->data);
+        L = L->next;
+    }
+}
+
+/*****************************************************************************************************************/
+
 /**
  * 设计一个递归算法，删除不带头结点的单链表L中所有值为x的结点。
  * @param list
@@ -137,5 +338,19 @@ void checkSubSequence(LinkedList A, LinkedList B);
  * @param L
  */
 void checkSymmetry(DLinkedList L);
+
+/**
+ * 有两个循环单链表，链表头指针分别为h1和h2，编写一个函数将链表h2链接到链表h1之后，要求链接后的链表仍保持循环链表形式。
+ * @param h1
+ * @param h2
+ */
+void connectCycleLinkedList(LinkedList h1, LinkedList h2);
+
+/**
+ * 设有一个带头结点的循环单链表，其结点值均为正整数。
+ * 设计一个算法，反复找出单链表中结点值最小的结点并输出，然后将该结点从中删除，直到单链表空为止，再删除表头结点。
+ * @param L
+ */
+void removeMinNodeInCycle(LinkedList L);
 
 #endif //DEMO1_MYLINKEDLIST_H
