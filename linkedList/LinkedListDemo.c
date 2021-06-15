@@ -5,33 +5,11 @@
 #include <stdlib.h>
 #include "MyLinkedList.h"
 
-/*
- * 打印不带头结点的单链表
- */
-void printLinkedList(LinkedList L);
-
-/*
- * 打印带头结点的单链表
- */
-void printLinkedListWithHead(LinkedList L);
-
-/*
- * 初始化不带头结点的单链表,采用尾插法
- */
-LinkedList initLinkedList(const int arr[], int len);
-
-/*
- * 初始化带头结点的单链表,采用尾插法
- */
-LinkedList initLinkedListWithHead(const int arr[], int len);
-
-void initLinkedListY(LinkedList l1, LinkedList l2);
-
 int main(){
     printf("hello LinkedList\n");
-    int a[] = {11,2,8,4,3,5};
+    int a[] = {1,2,3,4,5,6};
     int b[] = {1,3,5,7,9,11,15,18};
-    int c[] = {3,5,7,9,11};
+    int c[] = {11,12,13,14,15};
     LinkedList L= initLinkedList(a,6);
     LinkedList LWithHead = initLinkedListWithHead(a,6);
     LinkedList LWithHead1 = initLinkedListWithHead(b,8);
@@ -42,6 +20,11 @@ int main(){
     LNode *l2 = malloc(sizeof(LNode));
     l2->next = NULL;
     l2->data = 0;
+
+    DLinkedList cDl = initCycleDLinkedList(a,6);
+
+    LinkedList h1 = initCycleLinkedList(a,6);
+    LinkedList h2 = initCycleLinkedList(c,5);
 //    initLinkedListY(l1,l2);
 //    deleteValueX(L,3);
 //    printLinkedList(L);
@@ -60,87 +43,10 @@ int main(){
 //    mergeLinkedListDesc(LWithHead1,LWithHead2);
 //    getCommonLinkedList(LWithHead1,LWithHead2,l1);
 //    findCommonNode(LWithHead1,LWithHead2);
-    checkSubSequence(LWithHead1,LWithHead2);
+//    checkSubSequence(LWithHead1,LWithHead2);
+//    checkSymmetry(cDl);
+//    connectCycleLinkedList(h1,h2);
     return 1;
-}
-
-void initLinkedListY(LinkedList l1, LinkedList l2){
-    LNode *pre1 = l1;
-    LNode *pre2 = l2;
-    for (int i = 15; i < 19; ++i) {
-        LNode *node = malloc(sizeof(LNode));
-        node->data = i;
-        node->next = NULL;
-        pre1->next = node;
-        pre1 = node;
-    }
-    for (int i = 21; i < 28; ++i) {
-        LNode *node = malloc(sizeof(LNode));
-        node->data = i;
-        node->next = NULL;
-        pre2->next = node;
-        pre2 = node;
-    }
-    for (int i = 3; i < 9; ++i) {
-        LNode *node = malloc(sizeof(LNode));
-        node->data = i;
-        node->next = NULL;
-        pre1->next = node;
-        pre1 = node;
-        pre2->next = node;
-        pre2 = node;
-    }
-}
-
-LinkedList initLinkedList(const int arr[], int len){
-    LinkedList head;
-    LinkedList pre;
-    for (int i = 0; i < len; ++i) {
-        if(i==0){
-            head = malloc(sizeof(LNode));
-            head->data = arr[i];
-            head->next = NULL;
-            pre = head;
-        } else{
-            LinkedList node = malloc(sizeof(LNode));
-            node->data = arr[i];
-            node->next = NULL;
-            pre->next = node;
-            pre = node;
-        }
-    }
-    return head;
-}
-
-LinkedList initLinkedListWithHead(const int arr[], int len){
-    LinkedList head = malloc(sizeof(LNode));
-    head->data=len;
-    head->next=NULL;
-    LinkedList pre = head;
-    for (int i = 0; i < len; ++i) {
-        LinkedList node = malloc(sizeof(LNode));
-        node->data = arr[i];
-        node->next = NULL;
-        pre->next = node;
-        pre = node;
-    }
-    return head;
-}
-
-void printLinkedList(LinkedList L){
-    printf("LinkedList:");
-    while (L!=NULL){
-        printf("%d\t",L->data);
-        L= L->next;
-    }
-}
-
-void printLinkedListWithHead(LinkedList L){
-    printf("LinkedListWithHead:");
-    while (L->next!=NULL){
-        printf("%d\t",L->next->data);
-        L = L->next;
-    }
 }
 
 /*
@@ -601,4 +507,27 @@ void checkSymmetry(DLinkedList L){
         p = p->next;
         q = q->prior;
     }
+}
+
+/*
+ * 将h1的指向作为头指针,h2的指向左右尾指针 时间复杂度为O(1),空间复杂度为O(1)
+ */
+void connectCycleLinkedList(LinkedList h1, LinkedList h2){
+    LNode *node = h2->next;
+    //将h2的下一个接点指向h1的下一个结点,此时原本h2的链断开
+    h2->next = h1->next;
+    //将h1的下一个结点指向h2原本的下一个结点,从新构成一个h1和h2的新循环
+    h1->next = node;
+
+    printLinkedList(h1);
+}
+
+/*
+ * 当循环单链表不为空时,每次循环一轮,找出最小节点然后删掉.
+ * 时间复杂度为O(n^2),空间复杂度为O(1)
+ */
+void removeMinNodeInCycle(LinkedList L){
+
+    
+
 }
