@@ -1,6 +1,9 @@
-//
-// Created by lijia07 on 2021/6/2.
-//
+/*
+ * @description: 链表
+ * @Date: 2021-06-02 19:39:55
+ * @LastEditors: lijia
+ * @LastEditTime: 2021-06-16 19:59:12
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "MyLinkedList.h"
@@ -9,7 +12,7 @@ int main(){
     printf("hello LinkedList\n");
     int a[] = {1,2,3,4,5,6};
     int b[] = {1,3,5,7,9,11,15,18};
-    int c[] = {11,12,13,14,15};
+    int c[] = {11,12,8,14,15};
     LinkedList L= initLinkedList(a,6);
     LinkedList LWithHead = initLinkedListWithHead(a,6);
     LinkedList LWithHead1 = initLinkedListWithHead(b,8);
@@ -22,9 +25,11 @@ int main(){
     l2->data = 0;
 
     DLinkedList cDl = initCycleDLinkedList(a,6);
+    DLinkedList cDl1 = initDLinkedList(a,6);
 
     LinkedList h1 = initCycleLinkedList(a,6);
     LinkedList h2 = initCycleLinkedList(c,5);
+    LinkedList cl = initCycleLinkedListWithHead(c,5);
 //    initLinkedListY(l1,l2);
 //    deleteValueX(L,3);
 //    printLinkedList(L);
@@ -46,6 +51,10 @@ int main(){
 //    checkSubSequence(LWithHead1,LWithHead2);
 //    checkSymmetry(cDl);
 //    connectCycleLinkedList(h1,h2);
+    // removeMinNodeInCycle(cl);
+    // locate(cDl1,4);
+    // locate(cDl1,4);
+    findFromBottom(LWithHead,8);
     return 1;
 }
 
@@ -527,7 +536,84 @@ void connectCycleLinkedList(LinkedList h1, LinkedList h2){
  * 时间复杂度为O(n^2),空间复杂度为O(1)
  */
 void removeMinNodeInCycle(LinkedList L){
-
-    
-
+    while (L->next!=L){
+        LNode *temp = L->next;
+        LNode *minPre = L;
+        //找到最小结点的前置结点
+        while (temp->next!=L){
+            if(temp->data>temp->next->data){
+                minPre = temp;
+            }
+            temp =temp->next;
+        }
+        //删除最小的结点
+        LNode *min = minPre->next;
+        printf("delete node:%d\n",min->data);
+        minPre->next = min->next;
+        free(min);
+    }
+    printf("All node has been deleted,remove head node\n");
+    free(L);
 }
+
+/*
+ * 时间复杂度为O(n),空间复杂度为O(1)
+ */
+DNode * locate(DLinkedList L, int x){
+    DNode *node = L->next;
+    //循环找到值和x相同的结点
+    while (node->next!=NULL){
+        if(node->data!=x){
+            node = node->next;
+            continue;
+        }    
+        //将结点按freq的值进行从新排序,往前移动
+        printf("find node address:0x%x\n",node);
+        //TODO: 可以先把这个结点摘出来,然后找到需要插入的位置再重新插入
+        while (node->prior!=L&&node->freq>=node->prior->freq)
+        {
+            DNode *pre = node->prior;
+            node->prior = pre->prior;
+            pre->prior->next = node;
+            pre->next = node->next;
+            node->next->prior = pre;
+            node->next = pre;
+            pre->next = node;
+            printf("move node\n");
+        }
+        return node;
+    }
+    //找不到就返回null
+    printf("not found\n");
+    return NULL;
+}
+
+/*
+ * 设置两个指针p,q.p指针先移动,当p移动到第k个位置的时候,q开始移动.
+ * 然后两个指针同步移动,当p移动到最后一个结点的时候,q就在倒数第k个结点上
+ * 时间复杂度为O(n),空间复杂度为O(1)
+ */
+int findFromBottom(LinkedList list, int k){
+    LNode *p=list,*q=list;
+    int index = 0;
+    //获得倒数第k个结点
+    while (p->next)
+    {
+        ++index;
+        if (index>=k)
+        {
+            q = q->next;
+        }
+        p= p->next;
+    }
+    //判断结点是否存在
+    if (q!=list)
+    {
+        printf("find %dth from bottom is:%d",k,q->data);
+        return 1;
+    }
+    printf("not found\n");
+    return 0;
+}
+
+
