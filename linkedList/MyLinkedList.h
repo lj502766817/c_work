@@ -14,7 +14,8 @@ typedef struct LNode{
 
 typedef struct DNode{
     int data; //数据域
-    struct DNode *prior,*next;
+    int freq; //频度域
+    struct DNode *prior,*next; //指针域
 }DNode,*DLinkedList;
 
 /*
@@ -67,6 +68,7 @@ LinkedList initCycleLinkedListWithHead(const int arr[], int len){
         LNode *node = malloc(sizeof(LNode));
         node->data = arr[i];
         node->next = pre->next;
+        pre->next = node;
         pre = node;
     }
     return head;
@@ -117,6 +119,7 @@ DLinkedList initDLinkedList(const int arr[], int len){
         DNode *node = malloc(sizeof(DNode));
         node->data = arr[i];
         node->prior = p;
+        node->freq = 0;
         node->next = NULL;
         p->next = node;
         p = p->next;
@@ -352,5 +355,25 @@ void connectCycleLinkedList(LinkedList h1, LinkedList h2);
  * @param L
  */
 void removeMinNodeInCycle(LinkedList L);
+
+/**
+ * 设头指针为L的带有表头结点的非循环双向链表，其每个结点中除有pred (前驱指针）、data .(数据）和next (后继指针）域外，还有一个访问频度域freq。
+ * 在链表被启用前，其值均初始化为零。每当在链表中进行一次locate(L,x)运算时，令元素值为x的结点中freq域的值增1，
+ * 并使此链表中结点保持按访问频度非增(递减）的顺序排列，同时最近访问的结点排在频度相同的结点前面，以便使频繁访问的结点总是靠近表头。
+ * 试编写符合上述要求的locate(L,x)运算的算法，该 运算为函数过程，返回找到结点的地址，类型为指针型。
+ * @param L
+ * @param x
+ * @return
+ */
+DNode * locate(DLinkedList L, int x);
+
+/**
+ * 已知一个带有表头结点的单链表,假设该链表只给出了头指针list.在不改变链表的前提下，请设计一个尽可能高效的算法，
+ * 查找链表中倒数第k个位置上的结点(k为正整数)。若查找成功，算法输出该结点的data域的值，并返回1;否则，只返回0。
+ * @param {LinkedList} list
+ * @param {int} k
+ * @return {*}
+ */
+int findFromBottom(LinkedList list, int k);
 
 #endif //DEMO1_MYLINKEDLIST_H
