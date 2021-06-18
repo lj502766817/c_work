@@ -2,7 +2,7 @@
  * @description: 链表
  * @Date: 2021-06-02 19:39:55
  * @LastEditors: lijia
- * @LastEditTime: 2021-06-16 19:59:12
+ * @LastEditTime: 2021-06-18 10:05:45
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +11,7 @@
 int main(){
     printf("hello LinkedList\n");
     int a[] = {1,2,3,4,5,6};
-    int b[] = {1,3,5,7,9,11,15,18};
+    int b[] = {1,-3,-5,7,9,5,-1,18};
     int c[] = {11,12,8,14,15};
     LinkedList L= initLinkedList(a,6);
     LinkedList LWithHead = initLinkedListWithHead(a,6);
@@ -54,7 +54,9 @@ int main(){
     // removeMinNodeInCycle(cl);
     // locate(cDl1,4);
     // locate(cDl1,4);
-    findFromBottom(LWithHead,8);
+    // findFromBottom(LWithHead,3);
+    distinctAbsoluteValue(LWithHead1, 20);
+    
     return 1;
 }
 
@@ -614,6 +616,58 @@ int findFromBottom(LinkedList list, int k){
     }
     printf("not found\n");
     return 0;
+}
+
+/*
+ * 由于要求时间复杂度尽可能高效,则可以采用用空间换时间的方式.
+ * 首先建立一个长度为n+1的数组,已数组下标作为链表值的绝对值,并设置数组的初始值为0.
+ * 然后依次遍历链表,如果链表的值的绝对值对应的数组上的值为0则,数组值加1,否则将链表该节点删掉.
+ * 时间复杂度为O(m),空间复杂度为O(n)
+ */
+void distinctAbsoluteValue(LinkedList list, int n){
+    LNode *p = list;
+    // 初始化数组
+    int *a = malloc(sizeof(int));
+    for (int i = 0; i <= n; i++)
+    {
+        a[i]=0;
+    }
+    while (p->next!=NULL)
+    {   
+        //获得绝对值
+        int value = p->next->data<0?-(p->next->data):p->next->data;
+        //检查是否出现过
+        if(a[value]==0)
+        {
+            a[value]=1;
+            p = p->next;
+        }
+        else
+        {
+            //删除节点
+            LNode *node = p->next;
+            p->next = node->next;
+            free(node);
+        }
+        
+    }
+    printLinkedListWithHead(list);
+}
+
+/**
+ * 1.判断是否有环:设置两个指针,一个fast一个slow,slow每次走一步,slow=slow->next,fast每次走两步,fast=fast->next->next.
+ * 假如有环的话fast一定比slow先进环,并且在环里循环,当slow进环后,fast已经转过n圈并且在一点碰到slow.
+ * 假如没有环,那么fast会走到NULL,并且不会碰到slow.
+ * 即只要fast和slow能相遇就能证明链表有环.
+ * 2.找到环的入口:可知fast的速度是slow速度的两倍,即fast走过的路程是slow的两倍,即fast_D = 2*slow_D.
+ * 设从链表头到环入口的长度是len,相遇点距离环入口的距离是x,环的长度是r,则slow_D = len + x,fast_D = len + nr + x.
+ * 可以算得len = nr-x.则可以设置两个指针,cursor在头结点,meet在fast指针和slow指针相遇的点.
+ * 然后cursor和meet同时移动,相遇的点就是环的入口
+*/
+LNode * checkCycle(LinkedList list){
+    
+
+    return NULL;
 }
 
 
