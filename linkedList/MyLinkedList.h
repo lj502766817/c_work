@@ -376,4 +376,20 @@ DNode * locate(DLinkedList L, int x);
  */
 int findFromBottom(LinkedList list, int k);
 
+/**
+ * 用单链表保存m个整数,结点的结构为[data] [link],且|data|小于等于n(n为正整数).
+ * 现要求设计一个时间复杂度尽可能高效的算法,对于链表中data的绝对值相等的结点,仅保留第一次出现的结点而删除其余绝对值相等的结点.
+ * @param {LinkedList} list
+ * @param {int} n
+ * @return {*}
+ */
+void distinctAbsoluteValue(LinkedList list, int n);
+
+/**
+ * 设计一个算法完成以下功能：判断一个链表是否有环，如果有，找出环的入口点并返回,否则返回NULL.
+ * @param {LinkedList} list
+ * @return {LNode *}
+ */
+LNode * checkCycle(LinkedList list);
+
 #endif //DEMO1_MYLINKEDLIST_H
