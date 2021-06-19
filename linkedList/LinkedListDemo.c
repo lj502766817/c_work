@@ -1,8 +1,8 @@
 /*
  * @description: 链表
  * @Date: 2021-06-02 19:39:55
- * @LastEditors: lijia
- * @LastEditTime: 2021-06-18 10:05:45
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-19 16:38:23
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -55,7 +55,7 @@ int main(){
     // locate(cDl1,4);
     // locate(cDl1,4);
     // findFromBottom(LWithHead,3);
-    distinctAbsoluteValue(LWithHead1, 20);
+    // distinctAbsoluteValue(LWithHead1, 20);
     
     return 1;
 }
@@ -627,7 +627,7 @@ int findFromBottom(LinkedList list, int k){
 void distinctAbsoluteValue(LinkedList list, int n){
     LNode *p = list;
     // 初始化数组
-    int *a = malloc(sizeof(int));
+    int *a = malloc(n*sizeof(int));
     for (int i = 0; i <= n; i++)
     {
         a[i]=0;
@@ -646,7 +646,7 @@ void distinctAbsoluteValue(LinkedList list, int n){
         {
             //删除节点
             LNode *node = p->next;
-            p->next = node->next;
+            p->next = p->next->next;
             free(node);
         }
         
