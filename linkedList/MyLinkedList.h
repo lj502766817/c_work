@@ -225,7 +225,7 @@ void printLinkedListWithHead(LinkedList L){
 }
 
 LinkedList initLinkedListContainCycle(const int arr[], int len){
-    LNode *head = malloc(sizeof(int));
+    LNode *head = malloc(sizeof(LNode));
     head->data = len;
     head->next = NULL;
     LNode *pre = head;
@@ -234,7 +234,7 @@ LinkedList initLinkedListContainCycle(const int arr[], int len){
     {
         if (i==len/2)    
         {
-            LNode *tail = malloc(sizeof(int));
+            LNode *tail = malloc(sizeof(LNode));
             tail->data = arr[i];
             tail->next = pre;
             pre->next = tail;
@@ -242,7 +242,7 @@ LinkedList initLinkedListContainCycle(const int arr[], int len){
             continue;
         }
         
-        LNode *node = malloc(sizeof(int));
+        LNode *node = malloc(sizeof(LNode));
         node->data = arr[i];
         node->next = pre->next;
         pre->next = node;

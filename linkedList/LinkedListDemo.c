@@ -2,7 +2,7 @@
  * @description: 链表
  * @Date: 2021-06-02 19:39:55
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-20 20:56:31
+ * @LastEditTime: 2021-06-20 21:15:51
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -711,8 +711,8 @@ void rearrange(LinkedList L){
         slow = slow->next;
     }
     //拆分成两个链表.
-    LNode *L1 = malloc(sizeof(int));
-    LNode *L2 = malloc(sizeof(int));
+    LNode *L1 = malloc(sizeof(LNode));
+    LNode *L2 = malloc(sizeof(LNode));
     L1->next = L->next;
     L2->next = slow->next;
     slow->next = NULL;
