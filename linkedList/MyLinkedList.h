@@ -57,6 +57,8 @@ LinkedList initCycleLinkedList(const int arr[], int len);
 
 LinkedList initCycleLinkedListWithHead(const int arr[], int len);
 
+LinkedList initLinkedListContainCycle(const int arr[], int len);
+
 /**************************************************** Implementation *************************************************************/
 
 LinkedList initCycleLinkedListWithHead(const int arr[], int len){
@@ -200,6 +202,7 @@ void printLinkedList(LinkedList L){
             break;
         }
     }
+    printf("\n");
 }
 
 void printDLinkedList(DLinkedList L){
@@ -209,6 +212,7 @@ void printDLinkedList(DLinkedList L){
         printf("%d\t",L->next->data);
         L = L->next;
     }
+    printf("\n");
 }
 
 void printLinkedListWithHead(LinkedList L){
@@ -217,6 +221,34 @@ void printLinkedListWithHead(LinkedList L){
         printf("%d\t",L->next->data);
         L = L->next;
     }
+    printf("\n");
+}
+
+LinkedList initLinkedListContainCycle(const int arr[], int len){
+    LNode *head = malloc(sizeof(int));
+    head->data = len;
+    head->next = NULL;
+    LNode *pre = head;
+    LNode *tail = NULL;
+    for (int i = 0; i < len; i++)
+    {
+        if (i==len/2)    
+        {
+            LNode *tail = malloc(sizeof(int));
+            tail->data = arr[i];
+            tail->next = pre;
+            pre->next = tail;
+            pre = pre->next;
+            continue;
+        }
+        
+        LNode *node = malloc(sizeof(int));
+        node->data = arr[i];
+        node->next = pre->next;
+        pre->next = node;
+        pre = pre->next;
+    }
+    return head;
 }
 
 /*****************************************************************************************************************/
@@ -391,5 +423,13 @@ void distinctAbsoluteValue(LinkedList list, int n);
  * @return {LNode *}
  */
 LNode * checkCycle(LinkedList list);
+
+/**
+ *  设线性表L = (a1,a2,a3,...,an-2,an-1,an)采用带头结点的单链表保存,请设计一个空间复杂度为0(1)且时间上尽可能高效的算法，重新排列Z中的各结点,
+ * 得到线性表L` = (a1,an,a2,an-1,a3,an-2,...)
+ * @param {LinkedList} L
+ * @return {*}
+ */
+void rearrange(LinkedList L);
 
 #endif //DEMO1_MYLINKEDLIST_H

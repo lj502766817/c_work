@@ -2,7 +2,7 @@
  * @description: 链表
  * @Date: 2021-06-02 19:39:55
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-06-19 16:38:23
+ * @LastEditTime: 2021-06-20 20:56:31
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,33 +30,36 @@ int main(){
     LinkedList h1 = initCycleLinkedList(a,6);
     LinkedList h2 = initCycleLinkedList(c,5);
     LinkedList cl = initCycleLinkedListWithHead(c,5);
-//    initLinkedListY(l1,l2);
-//    deleteValueX(L,3);
-//    printLinkedList(L);
-//    removeValueX(LWithHead,3);
-//    printLinkedListWithHead(LWithHead);
-//    printListReverse(LWithHead);
-//    deleteMin(LWithHead);
-//    reverseLinkedListWithHead(LWithHead);
-//    ascendLinkedListWithHead(LWithHead);
-//    removeBetween(LWithHead,2,8);
-//    findSameNode(l1,l2);
-//    printAndFreeByAsc(LWithHead);
-//    splitLinkedList(LWithHead1,l1);
-//    splitLinkedList2(LWithHead,l1,l2);
-//    distinctLinkedList(LWithHead1);
-//    mergeLinkedListDesc(LWithHead1,LWithHead2);
-//    getCommonLinkedList(LWithHead1,LWithHead2,l1);
-//    findCommonNode(LWithHead1,LWithHead2);
-//    checkSubSequence(LWithHead1,LWithHead2);
-//    checkSymmetry(cDl);
-//    connectCycleLinkedList(h1,h2);
+
+    LinkedList hasCycle = initLinkedListContainCycle(a,6);
+    // initLinkedListY(l1,l2);
+    // deleteValueX(L,3);
+    // printLinkedList(L);
+    // removeValueX(LWithHead,3);
+    // printLinkedListWithHead(LWithHead);
+    // printListReverse(LWithHead);
+    // deleteMin(LWithHead);
+    // reverseLinkedListWithHead(LWithHead);
+    // ascendLinkedListWithHead(LWithHead);
+    // removeBetween(LWithHead,2,8);
+    // findSameNode(l1,l2);
+    // printAndFreeByAsc(LWithHead);
+    // splitLinkedList(LWithHead1,l1);
+    // splitLinkedList2(LWithHead,l1,l2);
+    // distinctLinkedList(LWithHead1);
+    // mergeLinkedListDesc(LWithHead1,LWithHead2);
+    // getCommonLinkedList(LWithHead1,LWithHead2,l1);
+    // findCommonNode(LWithHead1,LWithHead2);
+    // checkSubSequence(LWithHead1,LWithHead2);
+    // checkSymmetry(cDl);
+    // connectCycleLinkedList(h1,h2);
     // removeMinNodeInCycle(cl);
     // locate(cDl1,4);
     // locate(cDl1,4);
     // findFromBottom(LWithHead,3);
     // distinctAbsoluteValue(LWithHead1, 20);
-    
+    // checkCycle(hasCycle);
+    rearrange(LWithHead);
     return 1;
 }
 
@@ -665,9 +668,75 @@ void distinctAbsoluteValue(LinkedList list, int n){
  * 然后cursor和meet同时移动,相遇的点就是环的入口
 */
 LNode * checkCycle(LinkedList list){
-    
-
+    LNode *fast = list,*slow = list;
+    //如果fast能走到底则没有环
+    while (fast)
+    {
+        //fast每次前进2步,slow每次前进1步
+        fast = fast->next->next;
+        slow = slow->next;
+        //fast和slow在环内相遇
+        if (fast==slow)
+        {
+            printf("list has existed a cysle!\n");
+            LNode *cursor = list;
+            LNode *meet = fast;
+            while (true)
+            {
+                if(cursor==meet)
+                {
+                    printf("find the entry node:0x%x ,data:%d\n",meet,meet->data);
+                    return meet;
+                }
+                cursor = cursor->next;
+                meet = meet->next;
+            }
+        }
+    }
+    printf("there is no cycle!\n");
     return NULL;
+}
+
+/**
+ * 首先在头结点设置两个指针 fast和slow,fast一次前进两个结点,slow一次前进1一个结点.这样当fast走到最后的时候,slow就正好处于中点.这样通过slow将原来的链表分成两段L1,L2.
+ * 然后通过空间复杂度为O(1)的算法将L2逆置.最后依次从L1和L2取结点构建新链表L`.
+ * 时间复杂度为O(n),空间复杂度为O(1)
+*/
+void rearrange(LinkedList L){
+    LNode *fast = L,*slow = L;
+    //通过步长不等的两个指针找到链表的中点
+    while (fast&&fast->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    //拆分成两个链表.
+    LNode *L1 = malloc(sizeof(int));
+    LNode *L2 = malloc(sizeof(int));
+    L1->next = L->next;
+    L2->next = slow->next;
+    slow->next = NULL;
+    //将L2进行原地逆置
+    reverseLinkedListWithHead(L2);
+    //从L1,L2依次取出结点构成新的L`
+    LNode *pre = L;
+    while (L1->next)
+    {   
+        //从L1取出node1
+        LNode *node1 = L1->next;
+        L1->next = L1->next->next;
+        node1->next = NULL;
+        //从L2取出node2
+        LNode *node2 = L2->next;
+        L2->next = L2->next->next;
+        node2->next = NULL;
+        //构建L`
+        node1->next = node2;
+        pre->next = node1;
+        pre = pre->next->next;
+    }
+    
+    printLinkedListWithHead(L);
 }
 
 
