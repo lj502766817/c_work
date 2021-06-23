@@ -18,6 +18,11 @@ typedef struct DNode{
     struct DNode *prior,*next; //指针域
 }DNode,*DLinkedList;
 
+typedef struct LCharNode{
+    char data;
+    struct LCharNode *next;
+}LCharNode,*CharLinkedList;
+
 /*
  * 打印不带头结点的单链表
  */
@@ -58,6 +63,8 @@ LinkedList initCycleLinkedList(const int arr[], int len);
 LinkedList initCycleLinkedListWithHead(const int arr[], int len);
 
 LinkedList initLinkedListContainCycle(const int arr[], int len);
+
+CharLinkedList initCharLinkedList(const char arr[], int len);
 
 /**************************************************** Implementation *************************************************************/
 
@@ -247,6 +254,29 @@ LinkedList initLinkedListContainCycle(const int arr[], int len){
         node->next = pre->next;
         pre->next = node;
         pre = pre->next;
+    }
+    return head;
+}
+
+CharLinkedList initCharLinkedList(const char arr[], int len){
+    LCharNode *head,*pre;
+    for (int i = 0; i < len; i++)
+    {
+        if (i==0)
+        {
+            head = malloc(sizeof(LCharNode));
+            head->data = arr[i];
+            head->next = NULL;
+            pre = head;
+        }
+        else
+        {
+            LCharNode *node = malloc(sizeof(LCharNode));
+            node->data = arr[i];
+            node->next = NULL;
+            pre->next = node;
+            pre = pre->next;
+        }
     }
     return head;
 }
