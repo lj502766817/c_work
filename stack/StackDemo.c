@@ -1,7 +1,7 @@
 /*
  * @Author: lijia
  * @Date: 2021-06-20 22:25:17
- * @LastEditTime: 2021-06-23 15:07:52
+ * @LastEditTime: 2021-06-24 19:29:39
  * @LastEditors: lijia
  * @Description: 栈算法题
  * @FilePath: \c_work\demo1\stack\StackDemo.c
@@ -17,7 +17,7 @@ int main(){
     char arr[8] = {'I','O','I','O','I','O','I'};
     CharLinkedList charList = initCharLinkedList(arr,7);
     int p=0;
-    
+    char arr1[6]={'(','1','{','}','}','\0'};
     // int result = checkStackOpt(arr,8);
     // printf("result:%d\n",result);
     // checkCharListSymmetry(charList,7);
@@ -26,6 +26,7 @@ int main(){
     // popSharingSeqStack(1,&p);
     // enQueueWithTag(12);
     // deQueueWithTap(&p);
+    brecktCompletion(arr1);
     return 0;
 }
 
@@ -162,5 +163,56 @@ int deQueueWithTap(int * value){
         tagSeqQueue.tag==0;
     }
     return 1;
+}
+
+void brecktCompletion(char arr[]){
+    Stack *stack = malloc(sizeof(Stack));
+    initStack(stack,10);
+    char p;
+    for (int i = 0;; i++)
+    {
+        if(arr[i]=='\0'){
+            break;
+        }
+
+        if(arr[i]=='('||arr[i]=='['||arr[i]=='{'){
+            push(stack,arr[i]);
+            continue;
+        }
+        switch(arr[i]){
+            case ')': 
+                if (!(pop(stack,&p)&&p=='('))
+                {
+                    printf("breckt ) is not integrated.\n");
+                    return;
+                }
+                break;
+            case ']': 
+                if (!(pop(stack,&p)&&p=='['))
+                {
+                    printf("breckt ] is not integrated.\n");
+                    return;
+                }
+                break;
+            case '}': 
+                if (!(pop(stack,&p)&&p=='{'))
+                {
+                    printf("breckt } is not integrated.\n");
+                    return;
+                }
+                break;
+        }
+    }
+    if (!stackEmpty(stack))
+    {
+        printf("breckt is not integrated.\n");
+        return;
+    }
+    
+    printf("breckt is integrated.\n");
+}
+
+void trainScheduale(char arr[], int len){
+    
 }
 
