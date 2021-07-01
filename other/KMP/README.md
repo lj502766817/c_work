@@ -31,7 +31,7 @@
    next[j]=\begin{cases}
    0,当j=1的时候 \\
    Max\left\{k|1<k<j且p_1p_2...p_{k-1}=p_{j-k+1}...p_{j-2}p_{j-1} \right\},当此集合不为空的时候 \\
-   1,当其他情况 \\
+   1,当其他情况
    \end{cases}
    $$
 
