@@ -1,7 +1,7 @@
 /*
  * @Author: lijia
  * @Date: 2021-06-14 14:48:33
- * @LastEditTime: 2021-07-01 19:25:34
+ * @LastEditTime: 2021-07-02 17:35:55
  * @LastEditors: lijia
  * @Description: 字符串匹配 KMP算法
  * @FilePath: \c_work\demo1\other\KMP\KMP_demo.c
@@ -61,16 +61,43 @@ int indexOf(SString str, SString pStr){
     
 }
 
-void next(int *next, SString pStr){
+void getNext(int *next, SString pStr){
+    //第一位恒为-1
+    next[0]=-1;
+    //从第一位开始比较
+    int index = 0;
+    
+    int k=-1;
+    while (index<pStr.len-1)
+    {   
+        //1.k==-1的情况,即右滑到头了,那么直接next[j+1]=0
+        //,即如果模式串的j+1位与主串的i位对不上,那么模式串直接滑到第一位与i比对
+        //2.pk==pj的情况下,有next[j+1] = k+1
+        if(k==-1||pStr.data[index]==pStr.data[k])
+        {
+            index++,k++;
+            next[index]=k;
+        }
+        //pk!=pj的情况,将k表示的模式串右滑到next[k]继续比较.
+        else
+        {
+            k = next[k];
+        }
+    }
     
 }
 
-void nextVal(int *nextVal, SString pStr){
+void getNextVal(int *nextVal, SString pStr){
     
 }
 
 int main(){
     printf("KMP!\n");
-    
+    char arr1[9] = {'a','b','a','b','c','a','c','c','a'};
+    char arr2[5] = {'a','b','c','a','c'};
+    SString str = {arr1,9};
+    SString pStr = {arr2,5};
+    int index = indexOf(str,pStr);
+    printf("%d\n",index);
 }
 
