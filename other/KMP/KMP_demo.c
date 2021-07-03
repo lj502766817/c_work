@@ -1,8 +1,8 @@
 /*
  * @Author: lijia
  * @Date: 2021-06-14 14:48:33
- * @LastEditTime: 2021-07-02 17:35:55
- * @LastEditors: lijia
+ * @LastEditTime: 2021-07-03 15:48:05
+ * @LastEditors: Please set LastEditors
  * @Description: 字符串匹配 KMP算法
  * @FilePath: \c_work\demo1\other\KMP\KMP_demo.c
  */
@@ -41,7 +41,7 @@ int indexOf(SString str, SString pStr);
 
 int indexOf(SString str, SString pStr){
     int *next = malloc(pStr.len*sizeof(int));
-    getNext(next,pStr);
+    getNextVal(next,pStr);
     //字符串数组索引从0开始.
     int i=0,j=0;
     while (i<str.len&&j<pStr.len)
@@ -88,6 +88,31 @@ void getNext(int *next, SString pStr){
 }
 
 void getNextVal(int *nextVal, SString pStr){
+    nextVal[0]=-1;
+    int index = 0;
+    
+    int k=-1;
+    while (index<pStr.len-1)
+    {   
+        if(k==-1||pStr.data[index]==pStr.data[k])
+        {
+            index++,k++;
+            //k==-1的情况
+            if (pStr.data[index]!=pStr.data[k])
+            {
+                nextVal[index]=k;
+            }
+            //为了修正pj=pnext[j]的情况,因为这种情况下,如果子串的j位序与主串不匹配的话,那么在next[j]位序上一定和主串是不匹配的,因此直接比对next[next[j]]位序
+            else
+            {
+                nextVal[index]=nextVal[k];
+            }
+        }
+        else
+        {
+            k = nextVal[k];
+        }
+    }
     
 }
 
