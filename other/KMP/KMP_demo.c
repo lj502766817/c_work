@@ -1,7 +1,7 @@
 /*
  * @Author: lijia
  * @Date: 2021-06-14 14:48:33
- * @LastEditTime: 2021-07-03 15:48:05
+ * @LastEditTime: 2021-07-03 17:20:48
  * @LastEditors: Please set LastEditors
  * @Description: 字符串匹配 KMP算法
  * @FilePath: \c_work\demo1\other\KMP\KMP_demo.c
@@ -97,7 +97,7 @@ void getNextVal(int *nextVal, SString pStr){
         if(k==-1||pStr.data[index]==pStr.data[k])
         {
             index++,k++;
-            //k==-1的情况
+            //pj!=pnext[j]的情况
             if (pStr.data[index]!=pStr.data[k])
             {
                 nextVal[index]=k;
@@ -105,7 +105,7 @@ void getNextVal(int *nextVal, SString pStr){
             //为了修正pj=pnext[j]的情况,因为这种情况下,如果子串的j位序与主串不匹配的话,那么在next[j]位序上一定和主串是不匹配的,因此直接比对next[next[j]]位序
             else
             {
-                nextVal[index]=nextVal[k];
+                nextVal[index]=nextVal[k]; 
             }
         }
         else
