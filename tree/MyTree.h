@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-07-05 14:30:22
  * @LastEditors: lijia
- * @LastEditTime: 2021-07-05 16:20:43
+ * @LastEditTime: 2021-07-09 15:53:47
  * @FilePath: \c_work\demo1\tree\MyTree.h
  */
 
@@ -11,6 +11,11 @@
 
 #include <stdbool.h>
 #include <math.h>
+
+typedef struct BiTreeNode{
+    int value;
+    struct BiTreeNode *lChild,*rChild;
+}BiTreeNode,*BiTree;
 
 double log2(double x);
 /**
@@ -33,5 +38,13 @@ double log2(double x){
  * @return {*}
  */
 int getCommonParent(int i,int j);
+
+/**
+ * 编写后序遍历二叉树的非递归算法。
+ * @param {BiTree} t
+ * @param {int} cnt
+ * @return {*}
+ */
+void subTraversal(BiTree t, int cnt);
 
 #endif //DEMO1_MYTREE_H
