@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-07-05 14:30:22
  * @LastEditors: lijia
- * @LastEditTime: 2021-07-09 15:53:47
+ * @LastEditTime: 2021-07-12 16:14:19
  * @FilePath: \c_work\demo1\tree\MyTree.h
  */
 
@@ -13,11 +13,17 @@
 #include <math.h>
 
 typedef struct BiTreeNode{
-    int value;
+    char value;
     struct BiTreeNode *lChild,*rChild;
 }BiTreeNode,*BiTree;
 
 double log2(double x);
+
+/**
+ * 先序遍历构建树,value在a-z
+*/
+BiTree creatTree();
+
 /**
  * 精度丢失风险
 */
@@ -29,6 +35,23 @@ double log2(double x){
     double a = log(x);
     double b = log(base);
     return a/b;
+}
+
+BiTree creatTree(){
+    char value[10];
+    printf("enter value:");
+    scanf("%s",value);
+    if (value[0]>122||value[0]<97)
+    {
+        return NULL;
+    }
+    else
+    {
+        BiTree t = malloc(sizeof(BiTreeNode));
+        t->value=value[0];
+        t->lChild = creatTree();
+        t->rChild = creatTree();
+    }
 }
 
 /**
@@ -46,5 +69,13 @@ int getCommonParent(int i,int j);
  * @return {*}
  */
 void subTraversal(BiTree t, int cnt);
+
+/**
+ * 试给出二叉树的自下而上、从右到左的层次遍历算法。
+ * @param {BiTree} t
+ * @param {int} cnt
+ * @return {*}
+ */
+void seqTraversal(BiTree t, int cnt);
 
 #endif //DEMO1_MYTREE_H
