@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-07-05 14:30:22
  * @LastEditors: lijia
- * @LastEditTime: 2021-07-12 16:14:19
+ * @LastEditTime: 2021-07-14 17:18:17
  * @FilePath: \c_work\demo1\tree\MyTree.h
  */
 
@@ -77,5 +77,29 @@ void subTraversal(BiTree t, int cnt);
  * @return {*}
  */
 void seqTraversal(BiTree t, int cnt);
+
+/**
+ * 假设二叉树采用二叉链表存储结构，设计一个非递归算法求二叉树的高度。
+ * @param {*}
+ * @return {*}
+ */
+int height(BiTree t);
+
+/**
+ * 设一棵二叉树中各结点的值互不相同,其先序遍历序列和中序遍历序列分别存于两个一维数组A[1...n]和B[1...n]中,试编写算法建立该二叉树的二叉链表.
+ * @param {char} pre
+ * @param {int} preLen
+ * @param {char} mid
+ * @param {int} midLen
+ * @return {*}
+ */
+BiTree buildTree(char pre[], int preLen, char mid[], int midLen);
+
+/**
+ * 二叉树按二叉链表形式存储，写一个判别给定二叉树是否是完全二叉树的算法.
+ * @param {BiTree} t
+ * @return {*}
+ */
+void checkComplete(BiTree t);
 
 #endif //DEMO1_MYTREE_H
