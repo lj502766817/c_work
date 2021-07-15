@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-07-05 14:30:22
  * @LastEditors: lijia
- * @LastEditTime: 2021-07-14 17:18:17
+ * @LastEditTime: 2021-07-15 19:14:17
  * @FilePath: \c_work\demo1\tree\MyTree.h
  */
 
@@ -23,6 +23,8 @@ double log2(double x);
  * 先序遍历构建树,value在a-z
 */
 BiTree creatTree();
+
+void deleteTree(BiTree t);
 
 /**
  * 精度丢失风险
@@ -52,6 +54,19 @@ BiTree creatTree(){
         t->lChild = creatTree();
         t->rChild = creatTree();
     }
+}
+
+/**
+ * 递归方式后序遍历删除树
+*/
+void deleteTree(BiTree t){
+    if (t)
+    {
+        deleteTree(t->lChild);
+        deleteTree(t->rChild);
+        printf("delete node:%c\n",t->value);
+        free(t);
+    } 
 }
 
 /**
@@ -101,5 +116,43 @@ BiTree buildTree(char pre[], int preLen, char mid[], int midLen);
  * @return {*}
  */
 void checkComplete(BiTree t);
+
+/**
+ * 假设二叉树采用二叉链表存储结构存储，试设计一个算法，计算一棵给定二叉树的所有双分支结点个数。
+ * @param {BiTree} t
+ * @return {*}
+ */
+int countDoubleBranchNode(BiTree t);
+
+/**
+ * 设树召是一棵采用链式结构存储的二叉树，编写一个把树t中所有结点的左、右子树进行交换的函数。
+ * @param {BiTree} t
+ * @return {*}
+ */
+void exchangeLeftAndRight(BiTree t);
+
+/**
+ * 假设二叉树采用二叉链存储结构存储，设计一个算法，求先序遍历序列中第k(1<=k<=二叉树中结点个数)个结点的值。
+ * @param {BiTree} t
+ * @param {int} k
+ * @return {char}
+ */
+char getInPreTraversal(BiTree t, int k);
+
+/**
+ * 已知二叉树以二叉链表存储,编写算法完成:对于树中每个元素值为x的结点,删去以它为根的子树,并释放相应的空间。
+ * @param {BiTree} t
+ * @param {char} x
+ * @return {*}
+ */
+void deleteSubTreeX(BiTree t, char x);
+
+/**
+ * 在二叉树中查找值为X的结点，试编写算法（用C语言）打印值为x的结点的所有祖先，假设值为x的结点不多于一个。
+ * @param {BiTree} t
+ * @param {char} x
+ * @return {*}
+ */
+void getParentsByX(BiTree t, char x);
 
 #endif //DEMO1_MYTREE_H
