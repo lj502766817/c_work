@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-07-05 14:45:09
  * @LastEditors: lijia
- * @LastEditTime: 2021-07-14 19:45:56
+ * @LastEditTime: 2021-07-15 19:32:31
  * @FilePath: \c_work\demo1\tree\TreeDemo.c
  */
 
@@ -256,6 +256,126 @@ void checkComplete(BiTree t){
         queue[rear]=node->rChild;
         rear = (rear+1+50)%50;
     }
+}
+
+/**
+ * f(t)=0  t为null
+ * f(t)=f(t.left)+f(t.right)+1  t有两个子节点
+ * f(t)=f(t.left)+f(t.right)   t为叶子结点或者只有一个子节点
+ * ------------------------------------------------------
+ * 也可以直接全部遍历然后用一个全局变量统计
+*/
+int countDoubleBranchNode(BiTree t){
+    int cnt=0;
+    if (t==NULL)
+    {
+        return cnt;
+    }
+    if (t->lChild!=NULL&&t->rChild!=NULL)
+    {
+        cnt = countDoubleBranchNode(t->lChild)+countDoubleBranchNode(t->rChild)+1;
+    }
+    else
+    {
+        cnt = countDoubleBranchNode(t->lChild)+countDoubleBranchNode(t->rChild);
+    }
+    
+    return cnt;
+}
+
+void exchangeLeftAndRight(BiTree t){
+    if (t)
+    {
+        exchangeLeftAndRight(t->lChild);
+        exchangeLeftAndRight(t->rChild);
+        BiTree temp = t->lChild;
+        t->lChild = t->rChild;
+        t->rChild = temp;
+    }
+}
+
+char getInPreTraversal(BiTree t, int k){
+    //用栈来代替递归
+    BiTree stack[50];
+    int top=-1,index=0;
+    
+    stack[++top]=t;
+    while (top>=0)
+    {   
+        //出栈
+        BiTree node = stack[top--];
+        index++;
+        if (index==k)
+        {
+            printf("index %d is:%c",k,node->value);
+            return node->value;
+        }
+        if (node->rChild)
+        {
+            stack[++top]=node->rChild;
+        }
+        if (node->lChild)
+        {
+            stack[++top]=node->lChild;
+        }
+    }
+}
+
+/**
+ * 采用层序遍历查看每个结点,当有结点的子结点需要删除时,就删除那个子结点并将结点被删除的子结点设置成NULL
+*/
+void deleteSubTreeX(BiTree t, char x){
+    if (t->value==x)
+    {
+        deleteTree(t);
+    }
+    BiTree queue[50];
+    int front=0,rear=0;
+    
+    queue[rear]=t;
+    rear = (rear+1+50)%50;
+
+    while (front!=rear)
+    {
+        BiTree node = queue[front];
+        front = (front+1+50)%50;
+
+        if (node->lChild!=NULL)
+        {
+            if (node->lChild->value==x)
+            {
+                deleteTree(node->lChild);
+                node->lChild=NULL;
+            }
+        else
+            {
+                queue[rear]=node->lChild;
+                rear = (rear+1+50)%50;
+            }
+        }
+        
+        
+        if (node->rChild!=NULL)
+        {
+            if (node->rChild->value==x)
+            {
+                deleteTree(node->rChild);
+                node->rChild=NULL;
+            }
+            else
+            {
+                queue[rear]=node->rChild;
+                rear = (rear+1+50)%50;
+            }            
+        }
+
+    } 
+}
+
+/**
+ * 采用后续遍历,用栈存储结点的父节点和祖先结点
+*/
+void getParentsByX(BiTree t, char x){
     
 }
 
@@ -272,5 +392,12 @@ int main()
     char mid[6]={'d','b','e','a','c','f'};
     BiTree t = buildTree(pre,6,mid,6);
     // seqTraversal(t,10);
-    checkComplete(t);
+    // checkComplete(t);
+    // int cnt = countDoubleBranchNode(t);
+    // printf("%d",cnt);
+    // exchangeLeftAndRight(t);
+    // seqTraversal(t,10);
+    // getInPreTraversal(t,1);
+    // deleteTree(t);
+    deleteSubTreeX(t,'f');
 }
