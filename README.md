@@ -6,3 +6,5 @@
 [链表算法题](https://github.com/lj502766817/c_work/tree/main/linkedList)
 
 [栈和队列的东西-意义不大](https://github.com/lj502766817/c_work/tree/main/stack)
+
+[树相关的](https://github.com/lj502766817/c_work/tree/main/tree)
