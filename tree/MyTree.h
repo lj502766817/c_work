@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-07-05 14:30:22
  * @LastEditors: lijia
- * @LastEditTime: 2021-07-15 19:14:17
+ * @LastEditTime: 2021-07-16 17:01:56
  * @FilePath: \c_work\demo1\tree\MyTree.h
  */
 
@@ -154,5 +154,14 @@ void deleteSubTreeX(BiTree t, char x);
  * @return {*}
  */
 void getParentsByX(BiTree t, char x);
+
+/**
+ * 设一棵二叉树的结点结构为（LLINK, INFO, RLINK)，ROOT为指向该二叉树根结点的指针，p和q分别为该二叉树中任意两个结点的值，试编写算法找到p和q的最近公共祖先结点r。
+ * @param {BiTree} root
+ * @param {char} p
+ * @param {char} q
+ * @return {*}
+ */
+BiTree ancestor(BiTree root, char p, char q);
 
 #endif //DEMO1_MYTREE_H
