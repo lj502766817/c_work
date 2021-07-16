@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-07-05 14:45:09
  * @LastEditors: lijia
- * @LastEditTime: 2021-07-15 19:32:31
+ * @LastEditTime: 2021-07-16 17:24:29
  * @FilePath: \c_work\demo1\tree\TreeDemo.c
  */
 
@@ -10,8 +10,7 @@
 #include <stdlib.h>
 #include "MyTree.h"
 
-//数组初始值长度
-const int DEFAULT_LENGTH = 10;
+
 
 /**
  * 首先在一个二叉树中,任意两个非根结点的结点是一定有公共祖先节点的.又可知一个结点i的父节点是i/2取整.
@@ -376,6 +375,53 @@ void deleteSubTreeX(BiTree t, char x){
  * 采用后续遍历,用栈存储结点的父节点和祖先结点
 */
 void getParentsByX(BiTree t, char x){
+    BiTree stack[50];
+    int top=-1;
+    BiTree p=t,r=NULL;
+
+    while (p||top>=0)
+    {
+        if (p)
+        {
+            stack[++top]=p;
+            p = p->lChild;
+        }
+        else
+        {
+            p = stack[top];
+            if (p->rChild&&p->rChild!=r)
+            {
+                p=p->rChild;
+                stack[++top]=p;
+                p=p->lChild;
+            }
+            else
+            {
+                top--;
+                if (p->value==x)
+                {
+                    printf("find parents.\n");
+                    break;
+                }
+                r=p;
+                p=NULL;
+            }
+        }
+    }
+
+    for (int i = 0; i <= top; i++)
+    {
+        printf("%c\t",stack[i]->value);
+    }
+}
+
+/**
+ * 后序遍历分别找到这两个结点的全部父节点,然后在这两组父节点中找相同的最近结点
+*/
+BiTree ancestor(BiTree root, char p, char q){
+    BiTree stack[50],pAncestor[50],qAncestor[50];
+    int top=-1,pLen,qLen;
+
     
 }
 
@@ -399,5 +445,6 @@ int main()
     // seqTraversal(t,10);
     // getInPreTraversal(t,1);
     // deleteTree(t);
-    deleteSubTreeX(t,'f');
+    // deleteSubTreeX(t,'f');
+    getParentsByX(t,'f');
 }
