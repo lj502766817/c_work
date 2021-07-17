@@ -1,8 +1,8 @@
 /*
  * @description: 
  * @Date: 2021-07-05 14:45:09
- * @LastEditors: lijia
- * @LastEditTime: 2021-07-16 17:24:29
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-17 20:06:15
  * @FilePath: \c_work\demo1\tree\TreeDemo.c
  */
 
@@ -10,7 +10,14 @@
 #include <stdlib.h>
 #include "MyTree.h"
 
+void copyArray(BiTree *source, BiTree *target, int len);
 
+void copyArray(BiTree *source, BiTree *target, int len){
+    for (int i = 0; i < len; i++)
+    {
+        target[i]=source[i];
+    }
+}
 
 /**
  * 首先在一个二叉树中,任意两个非根结点的结点是一定有公共祖先节点的.又可知一个结点i的父节点是i/2取整.
@@ -417,11 +424,100 @@ void getParentsByX(BiTree t, char x){
 
 /**
  * 后序遍历分别找到这两个结点的全部父节点,然后在这两组父节点中找相同的最近结点
+ * ------------------------------------------------------------------
+ * 可以只用一个辅助数组,既在比较进行找的时候用栈和辅助数组去找
 */
 BiTree ancestor(BiTree root, char p, char q){
     BiTree stack[50],pAncestor[50],qAncestor[50];
-    int top=-1,pLen,qLen;
+    int top=-1,pLen=0,qLen=0;
+    BiTree t=root,r=NULL;
 
+    //进行后序遍历
+    while (t||top>=0)
+    {
+        if (t)
+        {
+            stack[++top]=t;
+            t = t->lChild;
+        }
+        else
+        {
+            t = stack[top];
+            if (t->rChild&&t->rChild!=r)
+            {
+                t = t->rChild;
+                stack[++top]=t;
+                t = t->lChild;
+            }
+            else
+            {
+                top--;
+                if (t->value==p)
+                {
+                    //复制p的全部祖先结点
+                    copyArray(stack,pAncestor,top+1);
+                    pLen = top+1;
+                }
+                else if (t->value==q)
+                {
+                    //复制q的全部祖先结点
+                    copyArray(stack,qAncestor,top+1);
+                    qLen = top+1;
+                }
+                //pq的祖先结点全部找到,退出
+                if (pLen>0&&qLen>0)
+                {
+                    break;
+                }
+
+                r = t;
+                t=NULL;
+            }
+        }
+    }
+    
+    int index=-1;
+    for (int i = 0; i < (pLen > qLen ? qLen : pLen); i++)
+    {       
+            //当两个不等时,前一位就是最近的相同祖先结点
+            if (pAncestor[i]!=qAncestor[i])
+            {
+                index=i-1;
+            }
+            //处理包含的情况,如:p的祖先结点包含q的祖先结点
+            else
+            {
+                index=i;
+            }
+            
+    }
+
+    if (index>=0)
+    {
+        printf("ancestor is:%c.\n",pAncestor[index]->value);
+    }
+    else
+    {
+        printf("there is no common ancestor.\n");
+    }
+    
+    return pAncestor[index];
+}
+
+//使用层序遍历得到每一层的宽度,然后得到最大宽度
+int getWidth(BiTree b){
+    BiTree queue[50];
+    int front=0,rear=0,tempWidth=0,maxWidth=0;
+    //记录每层的最右结点
+    BiTree last = b;
+
+    queue[rear]=b;
+    rear = (rear+1+50)%50;
+
+    while (front!=rear)
+    {
+        
+    }
     
 }
 
@@ -446,5 +542,5 @@ int main()
     // getInPreTraversal(t,1);
     // deleteTree(t);
     // deleteSubTreeX(t,'f');
-    getParentsByX(t,'f');
+    // ancestor(t,'f','b');
 }

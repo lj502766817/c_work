@@ -1,8 +1,8 @@
 /*
  * @description: 
  * @Date: 2021-07-05 14:30:22
- * @LastEditors: lijia
- * @LastEditTime: 2021-07-16 17:01:56
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-07-17 19:52:20
  * @FilePath: \c_work\demo1\tree\MyTree.h
  */
 
@@ -163,5 +163,12 @@ void getParentsByX(BiTree t, char x);
  * @return {*}
  */
 BiTree ancestor(BiTree root, char p, char q);
+
+/**
+ * 假设二叉树采用二叉链表存储结构,设计一个算法,求非空二叉树b的宽度（即具有结点数最多的那一层的结点个数)。
+ * @param {BiTree} b
+ * @return {*}
+ */
+int getWidth(BiTree b);
 
 #endif //DEMO1_MYTREE_H
