@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-07-05 14:45:09
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-17 20:06:15
+ * @LastEditTime: 2021-07-18 23:42:13
  * @FilePath: \c_work\demo1\tree\TreeDemo.c
  */
 
@@ -12,10 +12,11 @@
 
 void copyArray(BiTree *source, BiTree *target, int len);
 
-void copyArray(BiTree *source, BiTree *target, int len){
+void copyArray(BiTree *source, BiTree *target, int len)
+{
     for (int i = 0; i < len; i++)
     {
-        target[i]=source[i];
+        target[i] = source[i];
     }
 }
 
@@ -174,6 +175,8 @@ BiTree buildTree(char pre[], int preLen, char mid[], int midLen)
     t->value = head;
     t->lChild = NULL;
     t->rChild = NULL;
+    t->lTag = 0;
+    t->rTag = 0;
     //如果先序和中序都是一个结点,直接返回
     if (preLen == 1 || midLen == 1)
     {
@@ -231,36 +234,37 @@ BiTree buildTree(char pre[], int preLen, char mid[], int midLen)
 /**
  * 进行层序遍历,并且把空节点也加入队列,根据完全二叉树的性质,队列中的空节点之后不能有非空结点的存在
 */
-void checkComplete(BiTree t){
+void checkComplete(BiTree t)
+{
     //序列
     BiTree queue[50];
-    int front=0,rear=0;
+    int front = 0, rear = 0;
 
-    queue[rear]=t;
-    rear = (rear+1+50)%50;
+    queue[rear] = t;
+    rear = (rear + 1 + 50) % 50;
 
-    while (front!=rear)
+    while (front != rear)
     {
         BiTree node = queue[front];
-        front = (front+1+50)%50;
+        front = (front + 1 + 50) % 50;
         //如果是空节点,检查后续队列中是否有非空结点
-        if (node==NULL)
+        if (node == NULL)
         {
-            for (int i = front; i!=rear; i=(i+1+50)%50)
+            for (int i = front; i != rear; i = (i + 1 + 50) % 50)
             {
-               if (queue[i]!=NULL)
+                if (queue[i] != NULL)
                 {
                     printf("tree is not complete!\n");
-                    return ;
-                } 
+                    return;
+                }
             }
             printf("tree is complete!\n");
-            return ;
+            return;
         }
-        queue[rear]=node->lChild;
-        rear = (rear+1+50)%50;
-        queue[rear]=node->rChild;
-        rear = (rear+1+50)%50;
+        queue[rear] = node->lChild;
+        rear = (rear + 1 + 50) % 50;
+        queue[rear] = node->rChild;
+        rear = (rear + 1 + 50) % 50;
     }
 }
 
@@ -271,25 +275,27 @@ void checkComplete(BiTree t){
  * ------------------------------------------------------
  * 也可以直接全部遍历然后用一个全局变量统计
 */
-int countDoubleBranchNode(BiTree t){
-    int cnt=0;
-    if (t==NULL)
+int countDoubleBranchNode(BiTree t)
+{
+    int cnt = 0;
+    if (t == NULL)
     {
         return cnt;
     }
-    if (t->lChild!=NULL&&t->rChild!=NULL)
+    if (t->lChild != NULL && t->rChild != NULL)
     {
-        cnt = countDoubleBranchNode(t->lChild)+countDoubleBranchNode(t->rChild)+1;
+        cnt = countDoubleBranchNode(t->lChild) + countDoubleBranchNode(t->rChild) + 1;
     }
     else
     {
-        cnt = countDoubleBranchNode(t->lChild)+countDoubleBranchNode(t->rChild);
+        cnt = countDoubleBranchNode(t->lChild) + countDoubleBranchNode(t->rChild);
     }
-    
+
     return cnt;
 }
 
-void exchangeLeftAndRight(BiTree t){
+void exchangeLeftAndRight(BiTree t)
+{
     if (t)
     {
         exchangeLeftAndRight(t->lChild);
@@ -300,29 +306,30 @@ void exchangeLeftAndRight(BiTree t){
     }
 }
 
-char getInPreTraversal(BiTree t, int k){
+char getInPreTraversal(BiTree t, int k)
+{
     //用栈来代替递归
     BiTree stack[50];
-    int top=-1,index=0;
-    
-    stack[++top]=t;
-    while (top>=0)
-    {   
+    int top = -1, index = 0;
+
+    stack[++top] = t;
+    while (top >= 0)
+    {
         //出栈
         BiTree node = stack[top--];
         index++;
-        if (index==k)
+        if (index == k)
         {
-            printf("index %d is:%c",k,node->value);
+            printf("index %d is:%c", k, node->value);
             return node->value;
         }
         if (node->rChild)
         {
-            stack[++top]=node->rChild;
+            stack[++top] = node->rChild;
         }
         if (node->lChild)
         {
-            stack[++top]=node->lChild;
+            stack[++top] = node->lChild;
         }
     }
 }
@@ -330,95 +337,95 @@ char getInPreTraversal(BiTree t, int k){
 /**
  * 采用层序遍历查看每个结点,当有结点的子结点需要删除时,就删除那个子结点并将结点被删除的子结点设置成NULL
 */
-void deleteSubTreeX(BiTree t, char x){
-    if (t->value==x)
+void deleteSubTreeX(BiTree t, char x)
+{
+    if (t->value == x)
     {
         deleteTree(t);
     }
     BiTree queue[50];
-    int front=0,rear=0;
-    
-    queue[rear]=t;
-    rear = (rear+1+50)%50;
+    int front = 0, rear = 0;
 
-    while (front!=rear)
+    queue[rear] = t;
+    rear = (rear + 1 + 50) % 50;
+
+    while (front != rear)
     {
         BiTree node = queue[front];
-        front = (front+1+50)%50;
+        front = (front + 1 + 50) % 50;
 
-        if (node->lChild!=NULL)
+        if (node->lChild != NULL)
         {
-            if (node->lChild->value==x)
+            if (node->lChild->value == x)
             {
                 deleteTree(node->lChild);
-                node->lChild=NULL;
-            }
-        else
-            {
-                queue[rear]=node->lChild;
-                rear = (rear+1+50)%50;
-            }
-        }
-        
-        
-        if (node->rChild!=NULL)
-        {
-            if (node->rChild->value==x)
-            {
-                deleteTree(node->rChild);
-                node->rChild=NULL;
+                node->lChild = NULL;
             }
             else
             {
-                queue[rear]=node->rChild;
-                rear = (rear+1+50)%50;
-            }            
+                queue[rear] = node->lChild;
+                rear = (rear + 1 + 50) % 50;
+            }
         }
 
-    } 
+        if (node->rChild != NULL)
+        {
+            if (node->rChild->value == x)
+            {
+                deleteTree(node->rChild);
+                node->rChild = NULL;
+            }
+            else
+            {
+                queue[rear] = node->rChild;
+                rear = (rear + 1 + 50) % 50;
+            }
+        }
+    }
 }
 
 /**
  * 采用后续遍历,用栈存储结点的父节点和祖先结点
 */
-void getParentsByX(BiTree t, char x){
+void getParentsByX(BiTree t, char x)
+{
     BiTree stack[50];
-    int top=-1;
-    BiTree p=t,r=NULL;
+    int top = -1;
+    BiTree p = t, r = NULL;
 
-    while (p||top>=0)
+    while (p || top >= 0)
     {
         if (p)
         {
-            stack[++top]=p;
+            stack[++top] = p;
             p = p->lChild;
         }
         else
         {
             p = stack[top];
-            if (p->rChild&&p->rChild!=r)
+            if (p->rChild && p->rChild != r)
             {
-                p=p->rChild;
-                stack[++top]=p;
-                p=p->lChild;
+                p = p->rChild;
+                stack[++top] = p;
+                p = p->lChild;
             }
             else
             {
                 top--;
-                if (p->value==x)
+                if (p->value == x)
                 {
                     printf("find parents.\n");
                     break;
                 }
-                r=p;
-                p=NULL;
+                r = p;
+                p = NULL;
             }
         }
     }
 
     for (int i = 0; i <= top; i++)
     {
-        printf("%c\t",stack[i]->value);
+        printf("%c\t", stack[i]->value);
     }
 }
 
@@ -427,98 +434,295 @@ void getParentsByX(BiTree t, char x){
  * ------------------------------------------------------------------
  * 可以只用一个辅助数组,既在比较进行找的时候用栈和辅助数组去找
 */
-BiTree ancestor(BiTree root, char p, char q){
-    BiTree stack[50],pAncestor[50],qAncestor[50];
-    int top=-1,pLen=0,qLen=0;
-    BiTree t=root,r=NULL;
+BiTree ancestor(BiTree root, char p, char q)
+{
+    BiTree stack[50], pAncestor[50], qAncestor[50];
+    int top = -1, pLen = 0, qLen = 0;
+    BiTree t = root, r = NULL;
 
     //进行后序遍历
-    while (t||top>=0)
+    while (t || top >= 0)
     {
         if (t)
         {
-            stack[++top]=t;
+            stack[++top] = t;
             t = t->lChild;
         }
         else
         {
             t = stack[top];
-            if (t->rChild&&t->rChild!=r)
+            if (t->rChild && t->rChild != r)
             {
                 t = t->rChild;
-                stack[++top]=t;
+                stack[++top] = t;
                 t = t->lChild;
             }
             else
             {
                 top--;
-                if (t->value==p)
+                if (t->value == p)
                 {
                     //复制p的全部祖先结点
-                    copyArray(stack,pAncestor,top+1);
-                    pLen = top+1;
+                    copyArray(stack, pAncestor, top + 1);
+                    pLen = top + 1;
                 }
-                else if (t->value==q)
+                else if (t->value == q)
                 {
                     //复制q的全部祖先结点
-                    copyArray(stack,qAncestor,top+1);
-                    qLen = top+1;
+                    copyArray(stack, qAncestor, top + 1);
+                    qLen = top + 1;
                 }
                 //pq的祖先结点全部找到,退出
-                if (pLen>0&&qLen>0)
+                if (pLen > 0 && qLen > 0)
                 {
                     break;
                 }
 
                 r = t;
-                t=NULL;
+                t = NULL;
             }
         }
     }
-    
-    int index=-1;
+
+    int index = -1;
     for (int i = 0; i < (pLen > qLen ? qLen : pLen); i++)
-    {       
-            //当两个不等时,前一位就是最近的相同祖先结点
-            if (pAncestor[i]!=qAncestor[i])
-            {
-                index=i-1;
-            }
-            //处理包含的情况,如:p的祖先结点包含q的祖先结点
-            else
-            {
-                index=i;
-            }
-            
+    {
+        //当两个不等时,前一位就是最近的相同祖先结点
+        if (pAncestor[i] != qAncestor[i])
+        {
+            index = i - 1;
+        }
+        //处理包含的情况,如:p的祖先结点包含q的祖先结点
+        else
+        {
+            index = i;
+        }
     }
 
-    if (index>=0)
+    if (index >= 0)
     {
-        printf("ancestor is:%c.\n",pAncestor[index]->value);
+        printf("ancestor is:%c.\n", pAncestor[index]->value);
     }
     else
     {
         printf("there is no common ancestor.\n");
     }
-    
+
     return pAncestor[index];
 }
 
 //使用层序遍历得到每一层的宽度,然后得到最大宽度
-int getWidth(BiTree b){
+int getWidth(BiTree b)
+{
     BiTree queue[50];
-    int front=0,rear=0,tempWidth=0,maxWidth=0;
+    int front = 0, rear = 0, tempWidth = 0, maxWidth = 0;
     //记录每层的最右结点
     BiTree last = b;
 
-    queue[rear]=b;
-    rear = (rear+1+50)%50;
+    queue[rear] = b;
+    rear = (rear + 1 + 50) % 50;
 
-    while (front!=rear)
+    while (front != rear)
     {
-        
+        BiTree node = queue[front];
+        front = (front + 1 + 50) % 50;
+        tempWidth++;
+
+        //遍历到最右结点
+        if (node == last)
+        {
+            maxWidth = tempWidth > maxWidth ? tempWidth : maxWidth;
+            //设置下一层的最右结点
+            if (node->lChild)
+            {
+                last = node->lChild;
+            }
+            if (node->rChild)
+            {
+                last = node->rChild;
+            }
+            tempWidth = 0;
+        }
+
+        //下层结点进队列
+        if (node->lChild)
+        {
+            queue[rear] = node->lChild;
+            rear = (rear + 1 + 50) % 50;
+        }
+        if (node->rChild)
+        {
+            queue[rear] = node->rChild;
+            rear = (rear + 1 + 50) % 50;
+        }
+    }
+
+    printf("the tree`s width is:%d", maxWidth);
+}
+
+/**
+ * 由于是满二叉树,那么先序序列的头结点后面的结点一定是均分的左子树和右子树的先序序列.那么可以直接递归求出后序序列
+*/
+void getPostByPre(char pre[], int begin, int end)
+{
+    if (begin == end)
+    {
+        printf("%c\t", pre[begin]);
+        return;
+    }
+    //处理左子树
+    getPostByPre(pre, begin + 1, (end + begin + 1) / 2);
+    //处理右子树
+    getPostByPre(pre, (end + begin + 1) / 2 + 1, end);
+    //最后输出头结点
+    printf("%c\t", pre[begin]);
+}
+
+/**
+ * 先进行先/中/后序遍历,从左到右找到叶子节点,然后串成一个链表
+*/
+BiTree getLeafNodeList(BiTree t)
+{
+    BiTree stack[50];
+    int top = -1;
+    BiTree head, pre = NULL, p = t;
+
+    //进行中序遍历
+    while (p || top >= 0)
+    {
+        //走到最左
+        if (p)
+        {
+            stack[++top] = p;
+            p = p->lChild;
+        }
+        else
+        {
+            //出栈
+            p = stack[top--];
+            //如果有右子树
+            if (p->rChild)
+            {
+                //处理右子树头结点
+                p = p->rChild;
+            }
+            //当前结点是叶子节点
+            else
+            {
+                printf("assemble node:%c\t", p->value);
+                //处理头结点
+                if (pre == NULL)
+                {
+                    head = p;
+                }
+                else
+                {
+                    pre->rChild = p;
+                }
+                pre = p;
+                //设置p为NUL,继续从栈中拿结点
+                p = NULL;
+            }
+        }
+    }
+    pre->rChild = NULL;
+    return head;
+}
+
+bool checkSimilarity(BiTree t1, BiTree t2)
+{
+    if ((t1 != NULL && t2 == NULL) || (t1 == NULL && t2 != NULL))
+    {
+        return false;
+    }
+    else if (t1==NULL&&t2==NULL)
+    {
+        return true;
     }
     
+
+    bool leftCheck = checkSimilarity(t1->lChild, t2->lChild);
+    bool rightCheck = checkSimilarity(t1->rChild, t2->rChild);
+    if (!(leftCheck && rightCheck))
+    {
+        return false;
+    }
+    return true;
+}
+
+BiTree inThread(BiTree t, BiTree pre);
+
+BiTree inThread(BiTree t, BiTree pre){
+    if (t!=NULL)
+    {
+        //递归线索化左子树
+        pre = inThread(t->lChild,pre);
+        //没有左子树,建立前驱线索
+        if (t->lChild==NULL)
+        {
+            t->lChild = pre;
+            t->lTag = 1;
+        }
+        //为前驱结点建立后继
+        if (pre!=NULL&&pre->rChild==NULL)
+        {
+            pre->rChild = t;
+            pre->rTag = 1;
+        }
+        pre = t;
+        //递归线索化右子树
+        pre = inThread(t->rChild,pre);
+        
+        return pre;
+    }
+    //空树直接返回传进来的前驱
+    return pre;
+}
+
+void createInThreadByMid(BiTree t){
+    BiTree pre = NULL;
+    if (t!=NULL)
+    {
+        pre = inThread(t,pre);
+        pre->rChild = NULL;
+        pre->rTag = 1;
+    }
+    
+}
+
+/**
+ * 如果结点有右子结点,那么在后序序列的前驱一定是右子树的头结点.如果只有左子结点的话,那么在后序序列的前驱一定是左子树的头结点.
+ * 需要重点考虑的是叶子结点的情况,如果叶子节点是整个树中最左边的结点,那么没有前驱结点.
+ * 如果是不是说最左边,那么就找父节点的左子树的头结点,这个结点一定是叶子节点的前驱结点
+*/
+BiTree findPreNode(BiTree thread){
+    //有右子树
+    if (thread->rTag==0)
+    {
+        return thread->rChild;
+    }
+    //有左子树
+    if (thread->lTag==0)
+    {
+        return thread->lChild;
+    }
+    //thread是中序序列中的第一个结点,既最左边的结点,在后序序列中没有前驱结点
+    if (thread->lChild==NULL)
+    {
+        return NULL;
+    }
+    //考虑其他叶子节点的情况,考虑到单链的情况,一直往上找祖先结点,一直到这个祖先结点有左子树,此时左子树的头结点就是后序序列的中的前驱,或者找到单链的头结点,那么直接返回NULL
+    while (thread->lTag==1&&thread->lChild!=NULL)
+    {
+        thread = thread->lChild;
+    }
+    //存在左子树
+    if (thread->lTag==0)
+    {
+        return thread->lChild;
+    }
+    
+    return NULL; 
 }
 
 int main()
@@ -530,9 +734,14 @@ int main()
     // subTraversal(t,10);
     // seqTraversal(t,10);
     // height(t);
-    char pre[6]={'a','b','d','e','c','f'};
-    char mid[6]={'d','b','e','a','c','f'};
-    BiTree t = buildTree(pre,6,mid,6);
+    char pre[6] = {'a', 'b', 'd', 'e', 'c', 'f'};
+    char mid[6] = {'d', 'b', 'e', 'a', 'c', 'f'};
+    char pre1[7] = {'a', 'b', 'd', 'e', 'c', 'f', 'g'};
+    char pre2[5] = {'h','i','j','k','l'};
+    char mid2[5] = {'j','i','k','h','l'};
+
+    BiTree t = buildTree(pre, 6, mid, 6);
+    BiTree t2 = buildTree(pre2,5,mid2,5);
     // seqTraversal(t,10);
     // checkComplete(t);
     // int cnt = countDoubleBranchNode(t);
@@ -543,4 +752,11 @@ int main()
     // deleteTree(t);
     // deleteSubTreeX(t,'f');
     // ancestor(t,'f','b');
+    // getWidth(t);
+    // getPostByPre(pre1,0,6);
+    // getLeafNodeList(t);
+    // bool result = checkSimilarity(t,t2);
+    // printf("%d",result);
+    createInThreadByMid(t);
+
 }

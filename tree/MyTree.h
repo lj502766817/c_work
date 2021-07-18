@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-07-05 14:30:22
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-17 19:52:20
+ * @LastEditTime: 2021-07-18 23:25:40
  * @FilePath: \c_work\demo1\tree\MyTree.h
  */
 
@@ -15,6 +15,7 @@
 typedef struct BiTreeNode{
     char value;
     struct BiTreeNode *lChild,*rChild;
+    int lTag,rTag;
 }BiTreeNode,*BiTree;
 
 double log2(double x);
@@ -170,5 +171,44 @@ BiTree ancestor(BiTree root, char p, char q);
  * @return {*}
  */
 int getWidth(BiTree b);
+
+/**
+ * 设有一棵满二叉树（所有结点值均不同） ， 已知其先序序列为pre,设计一个算法求其后序序列post。
+ * @param {char} pre
+ * @param {int} begin 数组下标
+ * @param {int} end 数组下标
+ * @return {*}
+ */
+void getPostByPre(char pre[], int begin, int end);
+
+/**
+ * 设计一个算法将二叉树的叶结点按从左到右的顺序连成一个单链表， 表头指针为head。二叉树按二叉链表方式存储， 链接时用叶结点的右指针域来存放单链表指针。
+ * @param {BiTree} t
+ * @return {*}
+ */
+BiTree getLeafNodeList(BiTree t);
+
+/**
+ * 试设计判断两棵二叉树是否相似的算法。 所谓二叉树t1和t2相似， 指的是t1和t2都是空的二叉树或都只有一个根结点;
+ * 或t1的左子树和t2的左子树是相似的， 且t1的右子树和t2的右子树是相似的
+ * @param {BiTree} t1
+ * @param {BiTree} t2
+ * @return {*}
+ */
+bool checkSimilarity(BiTree t1, BiTree t2);
+
+/**
+ * 将树进行中序线索化
+ * @param {BiTree} t
+ * @return {*}
+ */
+void createInThreadByMid(BiTree t);
+
+/**
+ * 写出在中序线索二叉树里查找指定结点在后序序列的前驱结点的算法
+ * @param {BiTree} thread
+ * @return {*}
+ */
+BiTree findPreNode(BiTree thread);
 
 #endif //DEMO1_MYTREE_H
