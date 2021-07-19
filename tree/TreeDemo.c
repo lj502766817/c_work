@@ -1,8 +1,8 @@
 /*
  * @description: 
  * @Date: 2021-07-05 14:45:09
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-18 23:42:13
+ * @LastEditors: lijia
+ * @LastEditTime: 2021-07-19 14:48:45
  * @FilePath: \c_work\demo1\tree\TreeDemo.c
  */
 
@@ -635,11 +635,10 @@ bool checkSimilarity(BiTree t1, BiTree t2)
     {
         return false;
     }
-    else if (t1==NULL&&t2==NULL)
+    else if (t1 == NULL && t2 == NULL)
     {
         return true;
     }
-    
 
     bool leftCheck = checkSimilarity(t1->lChild, t2->lChild);
     bool rightCheck = checkSimilarity(t1->rChild, t2->rChild);
@@ -652,42 +651,43 @@ bool checkSimilarity(BiTree t1, BiTree t2)
 
 BiTree inThread(BiTree t, BiTree pre);
 
-BiTree inThread(BiTree t, BiTree pre){
-    if (t!=NULL)
+BiTree inThread(BiTree t, BiTree pre)
+{
+    if (t != NULL)
     {
         //递归线索化左子树
-        pre = inThread(t->lChild,pre);
+        pre = inThread(t->lChild, pre);
         //没有左子树,建立前驱线索
-        if (t->lChild==NULL)
+        if (t->lChild == NULL)
         {
             t->lChild = pre;
             t->lTag = 1;
         }
         //为前驱结点建立后继
-        if (pre!=NULL&&pre->rChild==NULL)
+        if (pre != NULL && pre->rChild == NULL)
         {
             pre->rChild = t;
             pre->rTag = 1;
         }
         pre = t;
         //递归线索化右子树
-        pre = inThread(t->rChild,pre);
-        
+        pre = inThread(t->rChild, pre);
+
         return pre;
     }
     //空树直接返回传进来的前驱
     return pre;
 }
 
-void createInThreadByMid(BiTree t){
+void createInThreadByMid(BiTree t)
+{
     BiTree pre = NULL;
-    if (t!=NULL)
+    if (t != NULL)
     {
-        pre = inThread(t,pre);
+        pre = inThread(t, pre);
         pre->rChild = NULL;
         pre->rTag = 1;
     }
-    
 }
 
 /**
@@ -695,34 +695,105 @@ void createInThreadByMid(BiTree t){
  * 需要重点考虑的是叶子结点的情况,如果叶子节点是整个树中最左边的结点,那么没有前驱结点.
  * 如果是不是说最左边,那么就找父节点的左子树的头结点,这个结点一定是叶子节点的前驱结点
 */
-BiTree findPreNode(BiTree thread){
+BiTree findPreNode(BiTree thread)
+{
     //有右子树
-    if (thread->rTag==0)
+    if (thread->rTag == 0)
     {
         return thread->rChild;
     }
     //有左子树
-    if (thread->lTag==0)
+    if (thread->lTag == 0)
     {
         return thread->lChild;
     }
     //thread是中序序列中的第一个结点,既最左边的结点,在后序序列中没有前驱结点
-    if (thread->lChild==NULL)
+    if (thread->lChild == NULL)
     {
         return NULL;
     }
     //考虑其他叶子节点的情况,考虑到单链的情况,一直往上找祖先结点,一直到这个祖先结点有左子树,此时左子树的头结点就是后序序列的中的前驱,或者找到单链的头结点,那么直接返回NULL
-    while (thread->lTag==1&&thread->lChild!=NULL)
+    while (thread->lTag == 1 && thread->lChild != NULL)
     {
         thread = thread->lChild;
     }
     //存在左子树
-    if (thread->lTag==0)
+    if (thread->lTag == 0)
     {
         return thread->lChild;
     }
+
+    return NULL;
+}
+
+/**
+ * 主要思想,先通过遍历找到叶子结点,然后看叶子结点是到根路径的长度,然后计算带权路径长.
+ * 这里使用非递归后续遍历,因为非递归的后续遍历可以很容易计算叶子结点到根节点的路径长,从而算得带权路径长.
+ * ------------------------------------------------
+ * 也能用前序遍历和层序遍历
+*/
+void calculateWPL(BiTree root)
+{
+    BiTree stack[50];
+    int top = -1,wpl=0;
+    BiTree p = root,r=NULL;
+
+    while (p||top>=0)
+    {
+        if (p)
+        {
+            stack[++top]=p;
+            p = p->lChild;
+        }
+        else
+        {
+            BiTree node = stack[top];
+            //有没处理的右子树
+            if (node->rChild&&node->rChild!=r)
+            {
+                p = node->rChild;
+                stack[++top]=p;
+                p = p->lChild;
+            }
+            //右子树已经处理或者为叶子结点
+            else
+            {
+                top--;
+                //处理叶子结点的情况
+                if (node->rChild==NULL)
+                {
+                    wpl += (top+1)*node->value;
+                }
+                p=NULL;
+                r=node;
+            }
+        }
+    }
+
+    printf("WPL is:%d",wpl);
+}
+
+/**
+ * 通过中序遍历进行输出,只在根节点和叶子结点加上括号
+*/
+void getInfixExpression(BiTree root, int deep){
+    if (root==NULL)
+    {
+        return;
+    }
+    //只要根节点和叶子结点不加括号
+    if (!(deep==1||(root->lChild==NULL&&root->rChild==NULL)))
+    {
+        printf("(");
+    }
+    getInfixExpression(root->lChild,deep+1);
+    printf("%c",root->value);
+    getInfixExpression(root->rChild,deep+1);
+    if (!(deep==1||(root->lChild==NULL&&root->rChild==NULL)))
+    {
+        printf(")");
+    }
     
-    return NULL; 
 }
 
 int main()
@@ -737,11 +808,14 @@ int main()
     char pre[6] = {'a', 'b', 'd', 'e', 'c', 'f'};
     char mid[6] = {'d', 'b', 'e', 'a', 'c', 'f'};
     char pre1[7] = {'a', 'b', 'd', 'e', 'c', 'f', 'g'};
-    char pre2[5] = {'h','i','j','k','l'};
-    char mid2[5] = {'j','i','k','h','l'};
+    char pre2[5] = {'h', 'i', 'j', 'k', 'l'};
+    char mid2[5] = {'j', 'i', 'k', 'h', 'l'};
+    char pre3[8] = {'*','+','a','b','*','c','-','d'};
+    char mid3[8] = {'a','+','b','*','c','*','-','d'};
 
     BiTree t = buildTree(pre, 6, mid, 6);
-    BiTree t2 = buildTree(pre2,5,mid2,5);
+    BiTree t2 = buildTree(pre2, 5, mid2, 5);
+    BiTree t3 = buildTree(pre3,8,mid3,8);
     // seqTraversal(t,10);
     // checkComplete(t);
     // int cnt = countDoubleBranchNode(t);
@@ -757,6 +831,7 @@ int main()
     // getLeafNodeList(t);
     // bool result = checkSimilarity(t,t2);
     // printf("%d",result);
-    createInThreadByMid(t);
-
+    // createInThreadByMid(t);
+    // calculateWPL(t);
+    getInfixExpression(t3,1);
 }
