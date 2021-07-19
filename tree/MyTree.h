@@ -1,8 +1,8 @@
 /*
  * @description: 
  * @Date: 2021-07-05 14:30:22
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021-07-18 23:25:40
+ * @LastEditors: lijia
+ * @LastEditTime: 2021-07-19 14:22:35
  * @FilePath: \c_work\demo1\tree\MyTree.h
  */
 
@@ -210,5 +210,21 @@ void createInThreadByMid(BiTree t);
  * @return {*}
  */
 BiTree findPreNode(BiTree thread);
+
+/**
+ * 二叉树的带权路径长度(WPL)是二叉树中所有叶结点的带权路径长度之和.给定一棵二叉树T,采用二叉链表存储，结点结构为[left,weight,right]
+ * 其中叶结点的weight域保存该结点的非负权值。设root为指向T的根结点的指针,请设计求T的WPL的算法
+ * @param {BiTree} root
+ * @return {*}
+ */
+void calculateWPL(BiTree root);
+
+/**
+ * 请设计一个算法,将给定的表达式树(二叉树)转换为等价的中缀表达式(通过括号反映操作符的计算次序)并输出
+ * @param {BiTree} root
+ * @param {int} deep
+ * @return {*}
+ */
+void getInfixExpression(BiTree root, int deep);
 
 #endif //DEMO1_MYTREE_H
