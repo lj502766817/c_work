@@ -37,7 +37,7 @@
   > 
   > ```
 
-* 写出图的深度优先搜索 DFS 算法的非递归算法（图采用邻接表形式)
+* 写出图的深度优先搜索$DFS$算法的非递归算法（图采用邻接表形式)
 
   > ```c
   > //由于使用了栈,这种深度优先遍历是从右到左的
@@ -65,5 +65,36 @@
 * 分别采用基于深度优先遍历和广度优先遍历算法判别以邻接表方式存储的有向图中是否存在由顶点$v_i$到顶点$v_j$的路径($i \neq j$).注意,算法中涉及的图的基本操作必须在此存储结构上实现。
 
   > ```c
-  > //基于深度优先遍历
+  > //不管是BFS还是DFS都是直接从i开始遍历然后如果能找到j顶点,那么有路径,否则没有
+  > int visited[MAXSIZE]={0};	//初始化标记数组
+  > int checkByDFS(Graph G, int i, int j){
+  >     if(i==j){
+  >         return 1;
+  >     }
+  >     int w,result=0;
+  >     visited[i]=1;	//设置i被访问
+  >     for(w = firstNeighbor(G,i);w!=-1;w = nextNeighbor(G,i,w)){
+  >         if(visited[w]&&checkByDFS(G,w,j)){	//邻接结点未被访问并且邻接结点有到j的路径
+  >             result = 1;
+  >         }
+  >     }
+  >     return result;
+  > }
+  > 
+  > int checkByBFS(Graph G, int i, int j){
+  >     initQueue(Q);enQueue(Q,i);	//初始化队列,并且将顶点入队
+  >     while(!isEmpty(Q)){
+  >         int node = deQueue(Q);
+  >         visited[node]=1;	//设置结点被访问
+  >         for(int w = firstNeighbor(G,node);w!=-1;w = nextNeighbor(G,node,w)){
+  >             if(w==j){	//找到j结点,直接返回
+  >                 return 1;
+  >             }
+  >             if(!visited[w]){	//如果结点没有被访问就入队
+  >                 enQueue(Q,w);
+  >             }
+  >         }
+  >     }
+  > }
   > ```
+
