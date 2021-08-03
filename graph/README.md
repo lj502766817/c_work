@@ -86,7 +86,7 @@
   >     while(!isEmpty(Q)){
   >         int node = deQueue(Q);
   >         visited[node]=1;	//设置结点被访问
-  >         for(int w = firstNeighbor(G,node);w!=-1;w = nextNeighbor(G,node,w)){
+  >         for(int w = firstNeighbor(G,node);w!=-1;w = nextNeighbor(G,node,w)){	//检查所有邻接点
   >             if(w==j){	//找到j结点,直接返回
   >                 return 1;
   >             }
@@ -98,3 +98,26 @@
   > }
   > ```
 
+* 假设图用邻接表表示，设计一个算法，输出从顶点$V_i$到顶点$V_j$的所有简单路径。
+
+  > ```c
+  > //简单路径就是要求顶点不重复的路径,采用递归的深度优先遍历来找到路径,并用一个path[]数组来记录路径,和len长度来记录路径的长度
+  > int visited[MAXSIZE]={0};	//初始化标记数组
+  > void printPath(ALGraph G, int i, int j, int path[], int len){
+  >     ArcNode* p = NULL;	//邻接顶点
+  >     path[len++]=i;	//将当前顶点添加到路径数组中,并且路径长度加一
+  >     visited[i]=1;	//设置当前顶点已被访问,保证每次递归的时候顶点不会被重复访问
+  >     if(i==j){
+  >         print(path,len);	//找到路径,进行输出并返回上一层
+  >         return;
+  >     }
+  >     p = G.vertices[i].first;
+  >     while(p!=NULL){
+  >         if(visited[p.adjvex]==0){	//如果顶点没有被访问过就继续递归
+  >             printPath(G,p.adjvex,j,path,len);
+  >         }
+  >         p = p.next;
+  >     }
+  >     visited[i]=0;	//回溯,邻接点全部递归完成后,设置顶点可被访问,以便上层递归的顶点继续遍历到
+  > }
+  > ```
