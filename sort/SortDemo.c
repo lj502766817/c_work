@@ -2,12 +2,13 @@
  * @description: 
  * @Date: 2021-08-19 17:07:55
  * @LastEditors: lijia
- * @LastEditTime: 2021-08-20 10:48:09
+ * @LastEditTime: 2021-08-20 17:14:23
  * @FilePath: \c_work\demo1\sort\SortDemo.c
  */
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 /**
  * 编写双向冒泡排序算法，在正反两个方向交替进行扫描,
@@ -20,8 +21,57 @@ int twoWayBubble(int *, int);
 */
 int splitOddEven(int *, int);
 
+/**
+ * 试编写一个算法，使之能够在数组L[1...n]中找出第k小的元素（即从小到大排序后处于第k个位置的元素）。
+*/
+int findMinK(int *, int , int, int);
+
+//可以使用从前/后的冒泡,或者先排序再找第k个,不过时间复杂度都是O(nlogn)以上,或者采用小顶堆,时间复杂度为O(n+klogn)
+//下面是一个基于快速排序的划分思想,平均时间复杂度为O(n),空间复杂度为划分的规模
+int findMinK(int *arr, int begin, int end, int k)
+{   
+    if (begin==end)
+    {
+        return arr[end];
+    }
+
+    int i=begin,j=end,temp = arr[begin],pivot = arr[begin];
+    while (i<j) //将数组切割成两部分
+    {
+        
+    }
+    
+
+    return 1;
+}
+
 int splitOddEven(int *arr, int len)
 {
+    int temp,i=0,j=len-1;
+    while (i<j)
+    {
+        while (i<j) //从后往前找到一个奇数
+        {
+            if (arr[j]%2==1)
+            {
+                temp = arr[j];
+                break;
+            }
+            j--;  
+        }
+        while (i<j) //从前往后找到一个偶数
+        {
+            if (arr[i]%2==0)
+            {   
+                //交换奇偶
+                arr[j]=arr[i];
+                arr[i] = temp;
+                break;
+            }
+            i++;
+        }
+    }
+    
     
     return 1;
 }
@@ -70,7 +120,21 @@ int twoWayBubble(int *arr, int len){
 }
 
 int main(){
-    int arr[10] = {3,5,3,84,19,9,10,11,45,1};
+    void printArr(int *, int);
+    int arr[10] = {12,5,3,84,19,9,10,11,45,1};
+    int arr1[5] = {1,3,5,7,2};
     // twoWayBubble(arr,10);
+    splitOddEven(arr1,5);
+
+    printArr(arr1,5);
     printf("sort.\n");
+}
+
+void printArr(int *arr, int len)
+{   printf("arr:");
+    for (int i = 0; i < len; i++)
+    {
+        printf("%d\t",arr[i]);
+    }
+    printf("\n");
 }
