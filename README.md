@@ -10,3 +10,7 @@
 [树相关的](https://github.com/lj502766817/c_work/tree/main/tree)
 
 [图的东西](https://github.com/lj502766817/c_work/tree/main/graph)
+
+[查找相关](https://github.com/lj502766817/c_work/tree/main/search)
+
+[排序相关](https://github.com/lj502766817/c_work/tree/main/sort)
