@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-08-19 17:07:55
  * @LastEditors: lijia
- * @LastEditTime: 2021-08-23 14:59:35
+ * @LastEditTime: 2021-08-23 19:24:12
  * @FilePath: \c_work\demo1\sort\SortDemo.c
  */
 
@@ -30,12 +30,74 @@ int findMinK(int *, int , int, int);
  * 已知由n(n>=2)个正整数构成的集合A{ak|0<=k<n}，将其划分为两个不相交的子集A1和A2，元素个数分别是n1和n2
  * ,A1和A2中的元素之和分别为S1和S2.设计一个尽可能高效的划分算法，满足|n1-n2|最小且|S1-S2|最大
 */
-void split(int *,int);
+void split(int *, int);
 
-//采用二分的思想,类似快速排序,先用pivot将集合分成两份,然后看pivot的位置是否在n/2处,如果不在就在多的那一边继续拆分.
-//时间复杂度为O(n),空间复杂度为O(1)
-void split(int *arr,int len)
+/**
+ * 荷兰国旗问题:设有一个仅由红、白、蓝三种颜色的条块组成的条块序列，请编写一个时间复杂度为O(n)的算法，
+ * 使得这些条块按红、白、蓝的顺序排好，即排成荷兰国旗图案。
+*/
+void theDutchFlag(int *, int);
+
+typedef enum Color {RED=1,WHITE,BLUE} color;
+//遍历线性表,然后设置三个指针,j表示当前扫描的元素,保证i前面的都是红色的,k后面的都是蓝色的
+void theDutchFlag(int *arr, int len)
 {
+    int i=0,j=0,k=len-1,temp;
+    while (j<k)
+    {
+        switch(arr[j]){
+            case RED:   //如果是红色,此时红色指针i停在白色上,交换i和j的值,然后i和j继续前进
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+                i++;j++;
+                break;
+            case WHITE: //如果是白色工作指针继续前移找其他颜色,红色指针i停在白色上
+                j++;
+                break;
+            case BLUE:  //如果是蓝色,交换k和j的值,把蓝色到后面,由于此时指针k有可能停在蓝色上,则j不动,k往后走
+                temp= arr[k];
+                arr[k] = arr[j];
+                arr[j] = temp;
+                k--;
+                break;
+        }
+    }
+    
+}
+
+//采用二分的思想,类似快速排序,先用pivot将集合分成两份,pivot左边的都是小于pivot的项,pivot右边的都是大于pivot的项,
+//然后看pivot的位置是否在n/2处,如果不在就在多的那一边继续拆分,只需要进行拆分,不用考虑排序
+//时间复杂度为O(n),空间复杂度为O(1)
+void split(int *arr, int len)
+{
+    int location=0,begin=0,end=len-1;
+    while (location!=len/2)
+    {
+        int pivot = arr[begin],i=begin,j=end;
+        while (i<j)
+        {
+            while (i<j&&arr[j]>=pivot)
+            {
+                j--;
+            }
+            arr[i] = arr[j];
+            while (i<j&&arr[i]<=pivot)
+            {
+                i++;
+            }
+            arr[j]=arr[i];
+        }
+        arr[i]=pivot;
+        location = i;
+        if (location>len/2)
+        {
+            end = location-1;
+        }else if (location<len/2)
+        {
+            begin = location+1;
+        }
+    }
     
 }
 
@@ -157,11 +219,14 @@ int main(){
     void printArr(int *, int);
     int arr[10] = {12,5,3,84,45,9,10,11,19,1};
     int arr1[5] = {1,3,5,7,2};
+    int arr2[15] = {1,3,1,2,2,3,2,1,2,3,2,1,2,3,3};
     // twoWayBubble(arr,10);
     // splitOddEven(arr1,5);
-    int result = findMinK(arr,0,9,4);
-    printf("result:%d.\n",result);
-    printArr(arr,10);
+    // int result = findMinK(arr,0,9,4);
+    // printf("result:%d.\n",result);
+    // split(arr,10);
+    theDutchFlag(arr2,15);
+    printArr(arr2,15);
     printf("sort.\n");
 }
 
