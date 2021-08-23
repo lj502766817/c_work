@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-08-19 17:07:55
  * @LastEditors: lijia
- * @LastEditTime: 2021-08-20 17:14:23
+ * @LastEditTime: 2021-08-23 14:59:35
  * @FilePath: \c_work\demo1\sort\SortDemo.c
  */
 
@@ -26,6 +26,19 @@ int splitOddEven(int *, int);
 */
 int findMinK(int *, int , int, int);
 
+/**
+ * 已知由n(n>=2)个正整数构成的集合A{ak|0<=k<n}，将其划分为两个不相交的子集A1和A2，元素个数分别是n1和n2
+ * ,A1和A2中的元素之和分别为S1和S2.设计一个尽可能高效的划分算法，满足|n1-n2|最小且|S1-S2|最大
+*/
+void split(int *,int);
+
+//采用二分的思想,类似快速排序,先用pivot将集合分成两份,然后看pivot的位置是否在n/2处,如果不在就在多的那一边继续拆分.
+//时间复杂度为O(n),空间复杂度为O(1)
+void split(int *arr,int len)
+{
+    
+}
+
 //可以使用从前/后的冒泡,或者先排序再找第k个,不过时间复杂度都是O(nlogn)以上,或者采用小顶堆,时间复杂度为O(n+klogn)
 //下面是一个基于快速排序的划分思想,平均时间复杂度为O(n),空间复杂度为划分的规模
 int findMinK(int *arr, int begin, int end, int k)
@@ -35,14 +48,35 @@ int findMinK(int *arr, int begin, int end, int k)
         return arr[end];
     }
 
-    int i=begin,j=end,temp = arr[begin],pivot = arr[begin];
+    int i=begin,j=end,pivot = arr[begin];
     while (i<j) //将数组切割成两部分
     {
-        
+        while (i<j&&arr[j]>=pivot)
+        {
+            j--;
+        }
+        arr[i] = arr[j];
+
+        while (i<j&&arr[i]<=pivot)
+        {
+            i++;
+        }
+        arr[j] = arr[i];
+    }
+    arr[i] = pivot;
+    if (k==i)
+    {
+        return i;
+    } else if (k<i)
+    {   //在左边进行递归
+        return findMinK(arr,begin,i-1,k);
+    }else if (k>i)
+    {   //在右边进行递归
+        return findMinK(arr,i+1,end,k);
     }
     
-
-    return 1;
+    
+    
 }
 
 int splitOddEven(int *arr, int len)
@@ -121,12 +155,13 @@ int twoWayBubble(int *arr, int len){
 
 int main(){
     void printArr(int *, int);
-    int arr[10] = {12,5,3,84,19,9,10,11,45,1};
+    int arr[10] = {12,5,3,84,45,9,10,11,19,1};
     int arr1[5] = {1,3,5,7,2};
     // twoWayBubble(arr,10);
-    splitOddEven(arr1,5);
-
-    printArr(arr1,5);
+    // splitOddEven(arr1,5);
+    int result = findMinK(arr,0,9,4);
+    printf("result:%d.\n",result);
+    printArr(arr,10);
     printf("sort.\n");
 }
 
