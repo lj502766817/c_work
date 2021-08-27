@@ -2,13 +2,20 @@
  * @description: 
  * @Date: 2021-08-19 17:07:55
  * @LastEditors: lijia
- * @LastEditTime: 2021-08-23 19:24:12
+ * @LastEditTime: 2021-08-27 15:19:45
  * @FilePath: \c_work\demo1\sort\SortDemo.c
  */
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+
+typedef struct LNode{
+    int data; //数据域
+    struct LNode *next;//指针域
+}LNode,*LinkedList;
+
+typedef enum Color {RED=1,WHITE,BLUE} color;
 
 /**
  * 编写双向冒泡排序算法，在正反两个方向交替进行扫描,
@@ -38,7 +45,60 @@ void split(int *, int);
 */
 void theDutchFlag(int *, int);
 
-typedef enum Color {RED=1,WHITE,BLUE} color;
+/**
+ * 编写一个算法,在基于单链表表示的待排序关键字序列上进行简单选择排序.
+*/
+void selectSort(LinkedList);
+
+/**
+ * 试设计一个算法,判断一个数据序列是否构成一个小根堆
+*/
+bool checkMinDump(int *, int);
+
+bool checkMinDump(int *arr, int len)
+{
+    for (int i = (len)/2; i > 0; i--)
+    {
+        if (arr[i-1]>arr[2*i-1])
+        {   
+            printf("not minDump.\n");
+            return false;
+        }
+        if (2*i!=len&&arr[i-1]>arr[2*i])   //如果有右结点,就检查右结点 
+        {
+            printf("not minDump.\n");
+            return false;
+        }
+    }
+    printf("is minDump.\n");
+    return true;
+}
+
+void selectSort(LinkedList list)
+{
+    LinkedList p = list,temp,target;
+    while (p)
+    {   
+        temp=p,target=p;
+        int tempData = p->data;
+        while (temp)    //找到值最小的结点
+        {
+            if (temp->data<tempData)
+            {
+                tempData = temp->data;
+                target = temp;
+            }
+            temp = temp->next;
+        }
+        //交换数据
+        target->data = p->data;
+        p->data = tempData;
+        //下一轮选择排序
+        p = p->next;
+    }
+    
+}
+
 //遍历线性表,然后设置三个指针,j表示当前扫描的元素,保证i前面的都是红色的,k后面的都是蓝色的
 void theDutchFlag(int *arr, int len)
 {
@@ -220,13 +280,20 @@ int main(){
     int arr[10] = {12,5,3,84,45,9,10,11,19,1};
     int arr1[5] = {1,3,5,7,2};
     int arr2[15] = {1,3,1,2,2,3,2,1,2,3,2,1,2,3,3};
+    int arr3[7] = {23,5,68,52,60,72,71};
+    LinkedList p1 = malloc(sizeof(LNode));p1->data = 3;p1->next = NULL;
+    LinkedList p2 = malloc(sizeof(LNode));p2->data = 8;p2->next = p1;
+    LinkedList p3 = malloc(sizeof(LNode));p3->data = 6;p3->next = p2;
+    LinkedList p4 = malloc(sizeof(LNode));p4->data = 11;p4->next = p3;
     // twoWayBubble(arr,10);
     // splitOddEven(arr1,5);
     // int result = findMinK(arr,0,9,4);
     // printf("result:%d.\n",result);
     // split(arr,10);
-    theDutchFlag(arr2,15);
-    printArr(arr2,15);
+    // theDutchFlag(arr2,15);
+    // selectSort(p4);
+    // checkMinDump(arr3,7);
+    // printArr(arr2,15);
     printf("sort.\n");
 }
 
