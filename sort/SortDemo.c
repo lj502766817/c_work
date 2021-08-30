@@ -2,7 +2,7 @@
  * @description: 
  * @Date: 2021-08-19 17:07:55
  * @LastEditors: lijia
- * @LastEditTime: 2021-08-27 15:19:45
+ * @LastEditTime: 2021-08-30 14:24:37
  * @FilePath: \c_work\demo1\sort\SortDemo.c
  */
 
@@ -54,6 +54,78 @@ void selectSort(LinkedList);
  * 试设计一个算法,判断一个数据序列是否构成一个小根堆
 */
 bool checkMinDump(int *, int);
+
+/**
+ * 设顺序表用数组A[]表示，表中元素存储在数组下标在1~m+n的范围内，前m个元素递增有序，后n个元素递增有序，设计一个算法，使得整个顺序表有序。
+*/
+void sortList(int *, int, int);
+
+/**
+ * 有一种简单的排序算法，称为计数排序（count sorting )。这种排序算法对一个待排序的表(用数组表示）进行排序，
+ * 并将排序结果存放到另一个新的表中。必须注意的是，表中所有待排序的关键码互不相同，计数排序算法针对表中的每个记录，
+ * 扫描待排序的表一趟，统计表中有多少个记录的关键码比该记录的关键码小，假设针对某个记录统计出的计数值为c，
+ * 则这个记录在新有序表中的合适存放位置即为c。
+*/
+void countSort(int *,int *,int);
+
+/**
+ * 设有一个数组中存放了一个无序的关键序列K1,K2,...,Kn。现要求将Kn放在将元素排序后的正确位置上，试编写实现该功能的算法，要求比较关键字的次数不超过n。
+*/
+void findLocation(int *, int);
+
+//以Kn为轴做一轮快速排序,最后能确定Kn的位置
+void findLocation(int *arr, int len)
+{
+    int pivot = arr[len-1];
+    int i = 0,j=len-1;
+    while (i<j)
+    {
+        while (i<j&&arr[i]<pivot)
+        {
+            i++;
+        }
+        arr[j]=arr[i];
+        while (i<j&&arr[j]>pivot)
+        {
+            j--;
+        }
+        arr[i]=arr[j];
+    }
+    arr[i]=pivot;
+}
+
+//时间复杂度O(n^2),空间复杂度O(n)
+void countSort(int *a,int *b,int len)
+{
+    for (int i = 0; i < len; i++)
+    {   
+        int cnt=0;
+        for (int j = 0; j < len; j++)
+        {
+            if (a[i]>a[j])
+            {
+                cnt++;
+            }
+        }
+        b[cnt]=a[i];
+    }
+    
+}
+
+//可以使用并归排序,时间复杂度O(m+n),空间复杂度O(m+n).或者前m项已经排序好的插入排序,时间复杂度为O(mn),空间复杂度为O(1)
+void sortList(int *arr, int m, int n)
+{
+    //采用插入排序
+    for (int i = m+1; i <= m+n; i++)
+    {
+        arr[0] = arr[i];
+        for (int j = i-1; arr[j]>arr[0]; j--)   //从后往前插入
+        {
+            arr[j+1] = arr[j]; //j后移
+            arr[j] = arr[0];
+        }
+    }
+}
 
 bool checkMinDump(int *arr, int len)
 {
@@ -277,10 +349,11 @@ int twoWayBubble(int *arr, int len){
 
 int main(){
     void printArr(int *, int);
-    int arr[10] = {12,5,3,84,45,9,10,11,19,1};
+    int arr[10] = {0,1,3,5,7,9,2,4,6,8};
     int arr1[5] = {1,3,5,7,2};
     int arr2[15] = {1,3,1,2,2,3,2,1,2,3,2,1,2,3,3};
     int arr3[7] = {23,5,68,52,60,72,71};
+    int arr4[10] = {0};
     LinkedList p1 = malloc(sizeof(LNode));p1->data = 3;p1->next = NULL;
     LinkedList p2 = malloc(sizeof(LNode));p2->data = 8;p2->next = p1;
     LinkedList p3 = malloc(sizeof(LNode));p3->data = 6;p3->next = p2;
@@ -293,7 +366,10 @@ int main(){
     // theDutchFlag(arr2,15);
     // selectSort(p4);
     // checkMinDump(arr3,7);
-    // printArr(arr2,15);
+    // sortList(arr,5,4);
+    // countSort(arr,arr4,10);
+    // findLocation(arr1,5);
+    printArr(arr1,5);
     printf("sort.\n");
 }
 
