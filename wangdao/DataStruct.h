@@ -46,9 +46,9 @@ IntArray initIntSeqList(int maxData, int len)
     return seq;
 }
 
-bool printIntSeqList(IntArray list);
+void printIntSeqList(IntArray list);
 
-bool printIntSeqList(IntArray list)
+void printIntSeqList(IntArray list)
 {
     for (int i = 0; i < list->length; i++)
     {
