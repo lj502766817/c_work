@@ -13,7 +13,7 @@
 typedef struct {
     int MaxSize,length;
     int *data;
-} IntSeqList,*IntSqList;
+} IntSeqList,*IntArray;
 
 
 
@@ -25,9 +25,9 @@ int getRandInt(int max)
     return rand() % max + 1;
 }
 
-IntSqList initIntSeqList(int maxData, int len);
+IntArray initIntSeqList(int maxData, int len);
 
-IntSqList initIntSeqList(int maxData, int len)
+IntArray initIntSeqList(int maxData, int len)
 {   
     if (len>MAX_SIZE)
     {
@@ -35,7 +35,7 @@ IntSqList initIntSeqList(int maxData, int len)
     }
     
     srand(time(NULL));
-    IntSqList seq = malloc(sizeof(IntSeqList));
+    IntArray seq = malloc(sizeof(IntSeqList));
     seq->MaxSize=MAX_SIZE;
     seq->length = len;
     seq->data = malloc(len*sizeof(int));
@@ -46,9 +46,9 @@ IntSqList initIntSeqList(int maxData, int len)
     return seq;
 }
 
-bool printIntSeqList(IntSqList list);
+bool printIntSeqList(IntArray list);
 
-bool printIntSeqList(IntSqList list)
+bool printIntSeqList(IntArray list)
 {
     for (int i = 0; i < list->length; i++)
     {
