@@ -15,17 +15,41 @@ typedef struct {
     int *data;
 } IntSeqList,*IntArray;
 
-
-
-int getRandInt(int max);
-
-int getRandInt(int max)
-{
-    int num;
-    return rand() % max + 1;
-}
-
 IntArray initIntSeqList(int maxData, int len);
+
+IntArray initIntOrderedSeqList(int maxData, int len);
+
+IntArray initIntOrderedSeqList(int maxData, int len)
+{   
+    if (len>MAX_SIZE)
+    {
+        return NULL;
+    }
+    
+    srand(time(NULL));
+    IntArray seq = malloc(sizeof(IntSeqList));
+    seq->MaxSize=MAX_SIZE;
+    seq->length = len;
+    seq->data = malloc(len*sizeof(int));
+    seq->data[0] = rand() % (maxData/2) + 1;
+
+    for (int i = 1; i < len; i++)
+    {   
+        seq->data[i] = rand() % maxData + 1;
+    }
+
+    //选择排序
+    for (int i = 0; i < len; i++) {
+        for (int j = i + 1; j < len; j++) {
+            if (seq->data[i] > seq->data[j]) {
+                int temp = seq->data[i];
+                seq->data[i] = seq->data[j];
+                seq->data[j] = temp;
+            }
+        }
+    }
+    return seq;
+}
 
 IntArray initIntSeqList(int maxData, int len)
 {   
@@ -41,7 +65,7 @@ IntArray initIntSeqList(int maxData, int len)
     seq->data = malloc(len*sizeof(int));
     for (int i = 0; i < len; i++)
     {   
-        seq->data[i]= getRandInt(maxData);
+        seq->data[i]= rand() % maxData + 1;
     }
     return seq;
 }
