@@ -3,9 +3,9 @@
  */
 # include "../DataStruct.h"
 
-bool delMin(IntSqList list, int *x);
+bool delMin(IntArray list, int *x);
 
-bool delMin(IntSqList list, int *x)
+bool delMin(IntArray list, int *x)
 {
     if (list->length<1)
     {
@@ -26,7 +26,7 @@ bool delMin(IntSqList list, int *x)
 
 int main()
 {
-    IntSqList seq = initIntSeqList(10,5);
+    IntArray seq = initIntSeqList(10,5);
     printIntSeqList(seq);
     int x;
     delMin(seq,&x);
