@@ -32,5 +32,5 @@ int main()
     delMin(seq,&x);
     printf("min:%d\n",x);
     printIntSeqList(seq);
-    return 0;
+    return 1;
 }
