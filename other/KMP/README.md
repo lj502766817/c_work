@@ -29,11 +29,11 @@
    因为当模式串在j的位置和主串在i的位置不匹配时,需要将模式串右滑到k,那么可以设定一个`next[j]=k`的函数,即当模式串在j的位序不匹配时,跳到k位序.结核上面的等式,可以得到一个next[j]的函数:
    
    $$
-   next[j] = \begin{cases}
-            0,                                  &\text{当 } j=1 \text{ 时} \\
-            \max \{ k \mid 1<k<j \text{ 且 } p_{1..k-1} = p_{j-k+1..j-2}p_{j-1} \}, &\text{当此集合不为空的时候} \\
-            1,                                  &\text{当其他情况}
-          \end{cases}
+   next[j] = \begin{cases} 
+   0, &\text{当 } j=1 \text{ 时} \\
+   \max \{ k \mid 1<k<j \text{ 且 } p_{1..k-1} = p_{j-k+1..j-2}p_{j-1} \}, &\text{当此集合不为空的时候} \\
+   1, &\text{当其他情况}
+   \end{cases}
    $$
 
    那么在有next[j]函数的情况下,字符串的匹配操作可以变为:
