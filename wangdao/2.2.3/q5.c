@@ -11,7 +11,7 @@ bool removeInterval(IntArray list, int s, int t)
     {
         return false;
     }
-    //双指针,快指针找不在s与t之间的值,慢指针写入正确的值
+    //双指针,快指针找不在s与t之间的值,慢指针写入正确的值 
     int idx = 0;
     for (int i = 0; i < list->length; i++)
     {
