@@ -92,6 +92,8 @@ void printIntSeqList(IntArray list)
 //链表方法
 IntLinkedArray initIntLinkedArray(int maxData, int len);
 
+IntLinkedList initIntLinkedList(int maxData, int len);
+
 void printIntLinkedArray(IntLinkedArray list);
 
 IntLinkedArray initIntLinkedArray(int maxData, int len)
@@ -105,7 +107,8 @@ IntLinkedArray initIntLinkedArray(int maxData, int len)
     IntLinkedArray list = malloc(sizeof(IntLinkedList));
     list->data = rand() % maxData + 1;
     list->next = NULL;
-
+    
+    //尾插
     IntLinkedArray current = list;
     for (int i = 0; i < len; i++)
     {
@@ -117,6 +120,22 @@ IntLinkedArray initIntLinkedArray(int maxData, int len)
     }
     
     return list;
+}
+
+IntLinkedList initIntLinkedList(int maxData, int len)
+{
+    srand(time(NULL));
+    IntLinkedList head = {len,NULL};
+
+    //头插
+    for (int i = 0; i < len; i++)
+    {
+        IntLinkedList* next = malloc(sizeof(IntLinkedList));
+        next->data = rand() % maxData + 1;
+        next->next = head.next;
+        head.next = next;
+    }
+    return head;
 }
 
 void printIntLinkedArray(IntLinkedArray list)
