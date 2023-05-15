@@ -30,8 +30,8 @@ bool delX(IntLinkedList *list, int x)
 int main()
 {
     IntLinkedList list = initIntLinkedList(8,10);
-    printIntLinkedArray(&list);
+    printIntLinkedArray(list.next);
     delX(&list,5);
-    printIntLinkedArray(&list);
+    printIntLinkedArray(list.next);
     return 1;
 }
