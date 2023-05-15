@@ -141,7 +141,7 @@ IntLinkedList initIntLinkedList(int maxData, int len)
 void printIntLinkedArray(IntLinkedArray list)
 {
     IntLinkedArray p = list;
-    while (p&&p->next)
+    while (p)
     {
         printf("%d\t",p->data);
         p=p->next;
